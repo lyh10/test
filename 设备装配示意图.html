@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>碲化铋颗粒智能检测分选设备 — 2D装配示意图</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #1a1a2e; font-family: "Microsoft YaHei", sans-serif; }
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+h1 { color: #e0e0e0; font-size: 24px; text-align: center; margin-bottom: 5px; }
+h2 { color: #a0c4ff; font-size: 16px; text-align: center; margin-bottom: 20px; }
+.svg-wrap { background: #16213e; border-radius: 12px; padding: 15px; margin-bottom: 20px; }
+svg { width: 100%; height: auto; }
+.label { font-size: 12px; fill: #e0e0e0; }
+.label-bold { font-size: 14px; fill: #ffd700; font-weight: bold; }
+.label-small { font-size: 10px; fill: #a0d2db; }
+.component { stroke-width: 2; }
+.arrow { fill: none; stroke: #ff6b6b; stroke-width: 1.5; marker-end: url(#arrowhead); }
+.dim-line { fill: none; stroke: #888; stroke-width: 0.8; }
+.dim-text { font-size: 9px; fill: #ccc; }
+.section-title { color: #e0e0e0; font-size: 14px; margin-bottom: 10px; border-bottom: 1px solid #444; padding-bottom: 5px; }
+.notes { color: #a0d2db; font-size: 12px; line-height: 1.8; background: #16213e; border-radius: 8px; padding: 15px; margin-top: 15px; }
+.notes strong { color: #ffd700; }
+table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+th { background: #0f3460; color: #ffd700; padding: 8px; font-size: 12px; }
+td { background: #16213e; color: #e0e0e0; padding: 6px 8px; font-size: 11px; border-bottom: 1px solid #333; }
+tr:hover td { background: #1a1a3e; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>基于AI视觉的碲化铋颗粒缺陷智能检测与分选设备</h1>
+<h2>2D装配示意图（俯视图 + 侧视图 + 电气拓扑图）</h2>
+
+<!-- ===================== 俯视图：盘面布局 ===================== -->
+<div class="svg-wrap">
+<p class="section-title">▎ 俯视图 — 玻璃盘面与检测工位布局（从上方看设备）</p>
+<svg viewBox="0 0 800 620" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#ff6b6b"/>
+  </marker>
+  <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#4dabf7"/>
+  </marker>
+</defs>
+
+<!-- 底色 -->
+<rect x="0" y="0" width="800" height="620" fill="#16213e" rx="8"/>
+
+<!-- 设备外壳轮廓 -->
+<rect x="50" y="30" width="700" height="540" rx="10" fill="none" stroke="#555" stroke-width="2" stroke-dasharray="8,4"/>
+<text x="400" y="20" class="label-bold" text-anchor="middle">设备外壳 1060×990mm (俯视)</text>
+
+<!-- DDR玻璃盘 -->
+<circle cx="420" cy="310" r="140" fill="#0a1628" stroke="#4dabf7" stroke-width="3"/>
+<circle cx="420" cy="310" r="130" fill="none" stroke="#4dabf7" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="420" y="290" class="label-bold" text-anchor="middle">DDR玻璃盘</text>
+<text x="420" y="310" class="label-small" text-anchor="middle">(DD马达驱动)</text>
+<text x="420" y="330" class="label-small" text-anchor="middle">连续匀速旋转</text>
+
+<!-- 颗粒排列在固定半径 -->
+<circle cx="420" cy="310" r="120" fill="none" stroke="#ffd700" stroke-width="1.5" stroke-dasharray="6,4"/>
+<text x="545" y="195" class="label-small" fill="#ffd700">颗粒排列半径圈</text>
+<text x="545" y="210" class="label-small" fill="#ffd700">(低压吸盘固定)</text>
+
+<!-- 颗粒示意 -->
+<circle cx="312" cy="228" r="4" fill="#ff6b6b"/>
+<circle cx="340" cy="200" r="4" fill="#ff6b6b"/>
+<circle cx="370" cy="193" r="4" fill="#51cf66"/>
+<circle cx="400" cy="195" r="4" fill="#51cf66"/>
+<circle cx="440" cy="193" r="4" fill="#51cf66"/>
+<circle cx="470" cy="200" r="4" fill="#ffd700"/>
+<circle cx="500" cy="228" r="4" fill="#51cf66"/>
+<circle cx="520" cy="260" r="4" fill="#ff6b6b"/>
+<circle cx="530" cy="310" r="4" fill="#51cf66"/>
+<text x="538" y="314" class="label-small" fill="#ff6b6b">🔴NG</text>
+<text x="306" y="232" class="label-small" fill="#51cf66">🟢OK</text>
+<text x="475" y="204" class="label-small" fill="#ffd700">🟡待检</text>
+
+<!-- 旋转方向箭头 -->
+<path d="M 370 180 A 120 120 0 0 1 530 280" class="arrow" marker-end="url(#arrowhead)"/>
+<text x="460" y="172" class="label-small" fill="#ff6b6b">旋转方向 ↻</text>
+
+<!-- 6个相机工位 -->
+<!-- 工位1 (入料口旁边) -->
+<g transform="translate(300,190)">
+  <rect x="-25" y="-12" width="50" height="24" rx="3" fill="#0f3460" stroke="#4dabf7" stroke-width="1.5"/>
+  <text x="0" y="2" class="label-small" text-anchor="middle" fill="#4dabf7">相机1</text>
+  <text x="0" y="35" class="label" text-anchor="middle">工位①</text>
+  <line x1="0" y1="-15" x2="0" y2="-25" stroke="#4dabf7" stroke-width="1"/>
+  <rect x="-20" y="-30" width="40" height="6" rx="2" fill="#1e3a5f" stroke="#888" stroke-width="0.5"/>
+  <text x="0" y="-28" class="label-small" text-anchor="middle" fill="#888">镜头</text>
+</g>
+
+<!-- 工位2 -->
+<g transform="translate(260,240)">
+  <rect x="-25" y="-12" width="50" height="24" rx="3" fill="#0f3460" stroke="#4dabf7" stroke-width="1.5"/>
+  <text x="0" y="2" class="label-small" text-anchor="middle" fill="#4dabf7">相机2</text>
+  <text x="0" y="35" class="label" text-anchor="middle">工位②</text>
+  <line x1="0" y1="-15" x2="0" y2="-25" stroke="#4dabf7" stroke-width="1"/>
+  <rect x="-20" y="-30" width="40" height="6" rx="2" fill="#1e3a5f" stroke="#888" stroke-width="0.5"/>
+</g>
+
+<!-- 工位3 -->
+<g transform="translate(240,310)">
+  <rect x="-25" y="-12" width="50" height="24" rx="3" fill="#0f3460" stroke="#4dabf7" stroke-width="1.5"/>
+  <text x="0" y="2" class="label-small" text-anchor="middle" fill="#4dabf7">相机3</text>
+  <text x="0" y="35" class="label" text-anchor="middle">工位③</text>
+  <line x1="0" y1="-15" x2="0" y2="-25" stroke="#4dabf7" stroke-width="1"/>
+  <rect x="-20" y="-30" width="40" height="6" rx="2" fill="#1e3a5f" stroke="#888" stroke-width="0.5"/>
+</g>
+
+<!-- 工位4 -->
+<g transform="translate(280,400)">
+  <rect x="-25" y="-12" width="50" height="24" rx="3" fill="#0f3460" stroke="#4dabf7" stroke-width="1.5"/>
+  <text x="0" y="2" class="label-small" text-anchor="middle" fill="#4dabf7">相机4</text>
+  <text x="0" y="35" class="label" text-anchor="middle">工位④</text>
+  <line x1="0" y1="-15" x2="0" y2="-25" stroke="#4dabf7" stroke-width="1"/>
+  <rect x="-20" y="-30" width="40" height="6" rx="2" fill="#1e3a5f" stroke="#888" stroke-width="0.5"/>
+</g>
+
+<!-- 工位5 -->
+<g transform="translate(370,440)">
+  <rect x="-25" y="-12" width="50" height="24" rx="3" fill="#0f3460" stroke="#4dabf7" stroke-width="1.5"/>
+  <text x="0" y="2" class="label-small" text-anchor="middle" fill="#4dabf7">相机5</text>
+  <text x="0" y="35" class="label" text-anchor="middle">工位⑤</text>
+  <line x1="0" y1="-15" x2="0" y2="-25" stroke="#4dabf7" stroke-width="1"/>
+  <rect x="-20" y="-30" width="40" height="6" rx="2" fill="#1e3a5f" stroke="#888" stroke-width="0.5"/>
+</g>
+
+<!-- 工位6 -->
+<g transform="translate(470,440)">
+  <rect x="-25" y="-12" width="50" height="24" rx="3" fill="#0f3460" stroke="#4dabf7" stroke-width="1.5"/>
+  <text x="0" y="2" class="label-small" text-anchor="middle" fill="#4dabf7">相机6</text>
+  <text x="0" y="35" class="label" text-anchor="middle">工位⑥</text>
+  <line x1="0" y1="-15" x2="0" y2="-25" stroke="#4dabf7" stroke-width="1"/>
+  <rect x="-20" y="-30" width="40" height="6" rx="2" fill="#1e3a5f" stroke="#888" stroke-width="0.5"/>
+</g>
+
+<!-- 入料口 -->
+<g transform="translate(200,150)">
+  <rect x="-40" y="-15" width="80" height="30" rx="5" fill="#1b4332" stroke="#51cf66" stroke-width="2"/>
+  <text x="0" y="3" class="label-bold" text-anchor="middle" fill="#51cf66">入料口</text>
+  <path d="M -40 0 L -80 0" stroke="#51cf66" stroke-width="2" marker-end="url(#arrowBlue)"/>
+</g>
+
+<!-- 振动盘 -->
+<g transform="translate(100,120)">
+  <ellipse cx="0" cy="0" rx="50" ry="35" fill="#1b4332" stroke="#51cf66" stroke-width="2"/>
+  <text x="0" y="-5" class="label-bold" text-anchor="middle" fill="#51cf66">精密振动盘</text>
+  <text x="0" y="10" class="label-small" text-anchor="middle" fill="#51cf66">(排队送料)</text>
+</g>
+
+<!-- 补料斗 -->
+<g transform="translate(100,50)">
+  <polygon points="-20,20 20,20 15,0 -15,0" fill="#2d6a4f" stroke="#51cf66" stroke-width="1.5"/>
+  <text x="0" y="10" class="label-small" text-anchor="middle" fill="#51cf66">补料斗</text>
+</g>
+
+<!-- 分选工位 -->
+<g transform="translate(560,310)">
+  <rect x="-30" y="-15" width="60" height="30" rx="5" fill="#3d0c0c" stroke="#ff6b6b" stroke-width="2"/>
+  <text x="0" y="3" class="label-bold" text-anchor="middle" fill="#ff6b6b">分选工位</text>
+  <text x="0" y="25" class="label-small" text-anchor="middle" fill="#ff6b6b">(气动阀吹气)</text>
+</g>
+
+<!-- 下料通道 -->
+<g transform="translate(630,310)">
+  <!-- OK通道 -->
+  <rect x="0" y="-60" width="40" height="40" rx="3" fill="#1b4332" stroke="#51cf66" stroke-width="1.5"/>
+  <text x="20" y="-35" class="label-bold" text-anchor="middle" fill="#51cf66">OK</text>
+  <text x="20" y="-20" class="label-small" text-anchor="middle" fill="#51cf66">合格品</text>
+  <!-- NG通道 -->
+  <rect x="0" y="-10" width="40" height="40" rx="3" fill="#3d0c0c" stroke="#ff6b6b" stroke-width="1.5"/>
+  <text x="20" y="10" class="label-bold" text-anchor="middle" fill="#ff6b6b">NG</text>
+  <text x="20" y="25" class="label-small" text-anchor="middle" fill="#ff6b6b">废料</text>
+  <!-- 回收通道 -->
+  <rect x="0" y="40" width="40" height="40" rx="3" fill="#4a3500" stroke="#ffd700" stroke-width="1.5"/>
+  <text x="20" y="60" class="label-bold" text-anchor="middle" fill="#ffd700">回收</text>
+  <text x="20" y="75" class="label-small" text-anchor="middle" fill="#ffd700">复检</text>
+</g>
+
+<!-- 吹气方向示意 -->
+<path d="M 530 310 L 590 310" stroke="#ff6b6b" stroke-width="2" marker-end="url(#arrowhead)"/>
+<text x="555" y="298" class="label-small" fill="#ff6b6b">压缩空气吹气</text>
+
+<!-- 光纤传感器位置 -->
+<g transform="translate(225,170)">
+  <rect x="-8" y="-4" width="16" height="8" rx="2" fill="#e8590c" stroke="#ff922b" stroke-width="1"/>
+  <text x="15" y="2" class="label-small" fill="#ff922b">光纤传感器①</text>
+</g>
+<g transform="translate(545,335)">
+  <rect x="-8" y="-4" width="16" height="8" rx="2" fill="#e8590c" stroke="#ff922b" stroke-width="1"/>
+  <text x="15" y="2" class="label-small" fill="#ff922b">光纤传感器②</text>
+</g>
+
+<!-- 尺寸标注 -->
+<line x1="50" y1="585" x2="750" y2="585" class="dim-line"/>
+<line x1="50" y1="575" x2="50" y2="585" class="dim-line"/>
+<line x1="750" y1="575" x2="750" y2="585" class="dim-line"/>
+<text x="400" y="600" class="dim-text" text-anchor="middle">≈1060mm (长)</text>
+
+<line x1="770" y1="30" x2="770" y2="570" class="dim-line"/>
+<line x1="750" y1="30" x2="770" y2="30" class="dim-line"/>
+<line x1="750" y1="570" x2="770" y2="570" class="dim-line"/>
+<text x="780" y="300" class="dim-text" text-anchor="middle">≈990mm (宽)</text>
+
+<!-- 颗粒流动路径 -->
+<path d="M 100 120 C 100 140 160 155 200 155 L 300 190" stroke="#51cf66" stroke-width="1" fill="none" stroke-dasharray="4,2"/>
+<text x="160" y="142" class="label-small" fill="#51cf66">颗粒流:振动盘→入料口→盘面</text>
+
+</svg>
+</div>
+
+<!-- ===================== 侧视图：设备立面 ===================== -->
+<div class="svg-wrap">
+<p class="section-title">▎ 侧视图 — 设备立面结构（从侧面看设备）</p>
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="800" height="500" fill="#16213e" rx="8"/>
+
+<!-- 地面 -->
+<line x1="30" y1="470" x2="770" y2="470" stroke="#666" stroke-width="3"/>
+<text x="400" y="490" class="dim-text" text-anchor="middle">地面</text>
+
+<!-- 设备框架 - 6060立柱 -->
+<rect x="80" y="60" width="12" height="410" fill="#555" stroke="#888" stroke-width="1"/>
+<rect x="708" y="60" width="12" height="410" fill="#555" stroke="#888" stroke-width="1"/>
+<text x="86" y="55" class="label-small" fill="#888">6060立柱</text>
+<text x="714" y="55" class="label-small" fill="#888">6060立柱</text>
+
+<!-- 4040横梁 -->
+<rect x="80" y="60" width="640" height="8" fill="#444" stroke="#888" stroke-width="0.5"/>
+<rect x="80" y="370" width="640" height="8" fill="#444" stroke="#888" stroke-width="0.5"/>
+<text x="400" y="52" class="label-small" fill="#888" text-anchor="middle">4040横梁(顶)</text>
+
+<!-- 钣金面板 -->
+<rect x="92" y="68" width="616" height="302" rx="3" fill="#1a1a3e" stroke="#555" stroke-width="1.5"/>
+<text x="400" y="85" class="label-small" fill="#555" text-anchor="middle">钣金面板(观察窗)</text>
+
+<!-- 减震平台 -->
+<rect x="120" y="380" width="560" height="20" rx="4" fill="#2d3436" stroke="#a0c4ff" stroke-width="1.5"/>
+<text x="400" y="395" class="label-bold" text-anchor="middle" fill="#a0c4ff">定制高精度减震平台</text>
+
+<!-- 脚杯 -->
+<g transform="translate(120,430)">
+  <polygon points="-8,0 8,0 4,40 -4,40" fill="#444" stroke="#888"/>
+  <ellipse cx="0" cy="42" rx="12" ry="4" fill="#333" stroke="#888"/>
+  <text x="0" y="55" class="label-small" text-anchor="middle" fill="#888">M12脚杯</text>
+</g>
+<g transform="translate(680,430)">
+  <polygon points="-8,0 8,0 4,40 -4,40" fill="#444" stroke="#888"/>
+  <ellipse cx="0" cy="42" rx="12" ry="4" fill="#333" stroke="#888"/>
+</g>
+
+<!-- DDR玻璃盘 (侧视截面) -->
+<g transform="translate(400,260)">
+  <!-- 盘面 -->
+  <rect x="-150" y="-5" width="300" height="10" rx="2" fill="#0a1628" stroke="#4dabf7" stroke-width="2"/>
+  <!-- DD马达 -->
+  <rect x="-25" y="5" width="50" height="40" rx="3" fill="#0f3460" stroke="#4dabf7" stroke-width="1.5"/>
+  <text x="0" y="25" class="label-small" text-anchor="middle" fill="#4dabf7">DDR马达</text>
+  <!-- 颗粒在盘面上 -->
+  <circle cx="-110" cy="-2" r="3" fill="#51cf66"/>
+  <circle cx="-60" cy="-2" r="3" fill="#51cf66"/>
+  <circle cx="0" cy="-2" r="3" fill="#ffd700"/>
+  <circle cx="60" cy="-2" r="3" fill="#ff6b6b"/>
+  <circle cx="110" cy="-2" r="3" fill="#51cf66"/>
+  <text x="0" y="-15" class="label-bold" text-anchor="middle" fill="#4dabf7">光学玻璃检测盘</text>
+  <text x="150" y="-5" class="label-small" fill="#ffd700">低压吸盘固定↓</text>
+</g>
+
+<!-- 相机支架组 (侧视) -->
+<g transform="translate(200,180)">
+  <!-- 相机 -->
+  <rect x="-12" y="-15" width="24" height="18" rx="2" fill="#0f3460" stroke="#4dabf7" stroke-width="1.5"/>
+  <text x="0" y="-3" class="label-small" text-anchor="middle" fill="#4dabf7">MGV518</text>
+  <!-- 镜头 -->
+  <rect x="-8" y="-20" width="16" height="5" rx="1" fill="#1e3a5f" stroke="#888" stroke-width="0.5"/>
+  <!-- 环形光源 -->
+  <ellipse cx="0" cy="-28" rx="20" ry="5" fill="none" stroke="#ffd700" stroke-width="1"/>
+  <text x="30" y="-25" class="label-small" fill="#ffd700">环形光源</text>
+  <!-- L型支架 -->
+  <line x1="-12" y1="0" x2="-12" y2="35" stroke="#888" stroke-width="2"/>
+  <line x1="-12" y1="35" x2="12" y2="35" stroke="#888" stroke-width="2"/>
+  <text x="25" y="35" class="label-small" fill="#888">L型支架</text>
+</g>
+
+<!-- 工控机 -->
+<g transform="translate(600,140)">
+  <rect x="-40" y="-30" width="80" height="60" rx="5" fill="#1a1a3e" stroke="#e8590c" stroke-width="2"/>
+  <text x="0" y="-5" class="label-bold" text-anchor="middle" fill="#e8590c">工控机</text>
+  <text x="0" y="10" class="label-small" text-anchor="middle" fill="#e8590c">i7+3060</text>
+  <text x="0" y="25" class="label-small" text-anchor="middle" fill="#e8590c">4U IPC</text>
+</g>
+
+<!-- 显示器 -->
+<g transform="translate(660,300)">
+  <rect x="-30" y="-40" width="60" height="45" rx="3" fill="#1a1a3e" stroke="#a0d2db" stroke-width="1.5"/>
+  <rect x="-35" y="5" width="70" height="5" rx="1" fill="#333" stroke="#888"/>
+  <text x="0" y="-15" class="label-small" text-anchor="middle" fill="#a0d2db">AOC 21"</text>
+</g>
+
+<!-- 振动盘 (侧视) -->
+<g transform="translate(140,320)">
+  <ellipse cx="0" cy="0" rx="40" ry="15" fill="#1b4332" stroke="#51cf66" stroke-width="1.5"/>
+  <text x="0" y="-3" class="label-small" text-anchor="middle" fill="#51cf66">振动盘</text>
+  <rect x="-20" y="-25" width="40" height="10" fill="#2d6a4f" stroke="#51cf66" stroke-width="1"/>
+  <text x="0" y="-18" class="label-small" text-anchor="middle" fill="#51cf66">补料斗</text>
+</g>
+
+<!-- 空压机 -->
+<g transform="translate(660,420)">
+  <rect x="-30" y="-25" width="60" height="50" rx="5" fill="#1a1a3e" stroke="#ff6b6b" stroke-width="1.5"/>
+  <text x="0" y="-5" class="label-small" text-anchor="middle" fill="#ff6b6b">空压机</text>
+  <text x="0" y="10" class="label-small" text-anchor="middle" fill="#ff6b6b">OTS-550</text>
+  <text x="0" y="22" class="label-small" text-anchor="middle" fill="#ff6b6b">50L/0.8MPa</text>
+</g>
+
+<!-- PLC柜 -->
+<g transform="translate(100,420)">
+  <rect x="-40" y="-30" width="80" height="50" rx="3" fill="#1a1a3e" stroke="#a0c4ff" stroke-width="1.5"/>
+  <text x="0" y="-10" class="label-bold" text-anchor="middle" fill="#a0c4ff">PLC柜</text>
+  <text x="0" y="5" class="label-small" text-anchor="middle" fill="#a0c4ff">S7-1214C</text>
+  <text x="0" y="18" class="label-small" text-anchor="middle" fill="#a0c4ff">+SM1223×2</text>
+</g>
+
+<!-- 分选吹嘴(侧视) -->
+<g transform="translate(520,260)">
+  <polygon points="0,-20 5,-15 5,15 0,20 -5,15 -5,-15" fill="#3d0c0c" stroke="#ff6b6b" stroke-width="1.5"/>
+  <text x="15" y="0" class="label-small" fill="#ff6b6b">吹嘴</text>
+  <!-- 吹气方向 -->
+  <line x1="5" y1="0" x2="30" y2="0" stroke="#ff6b6b" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+</g>
+
+<!-- 尺寸标注 -->
+<line x1="80" y1="485" x2="720" y2="485" class="dim-line"/>
+<text x="400" y="498" class="dim-text" text-anchor="middle">≈1060mm</text>
+
+<line x1="30" y1="60" x2="30" y2="470" class="dim-line"/>
+<text x="35" y="265" class="dim-text" text-anchor="start" transform="rotate(-90,35,265)">≈1850mm(高)</text>
+
+</svg>
+</div>
+
+<!-- ===================== 电气接线拓扑图 ===================== -->
+<div class="svg-wrap">
+<p class="section-title">▎ 电气接线拓扑图 — 供电、网络、信号连接关系</p>
+<svg viewBox="0 0 800 550" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="800" height="550" fill="#16213e" rx="8"/>
+
+<!-- === 供电拓扑 === -->
+<text x="400" y="25" class="label-bold" text-anchor="middle">供电拓扑（红色线=AC220V，蓝色线=DC24V）</text>
+
+<!-- AC220V入口 -->
+<rect x="60" y="50" width="120" height="30" rx="5" fill="#3d0c0c" stroke="#ff6b6b" stroke-width="2"/>
+<text x="120" y="70" class="label-bold" text-anchor="middle" fill="#ff6b6b">AC220V 市电</text>
+
+<!-- 电源滤波器 -->
+<rect x="220" y="50" width="100" height="30" rx="5" fill="#1a1a3e" stroke="#ff6b6b" stroke-width="1.5"/>
+<text x="270" y="70" class="label" text-anchor="middle" fill="#ff6b6b">电源滤波器</text>
+<line x1="180" y1="65" x2="220" y2="65" stroke="#ff6b6b" stroke-width="2"/>
+
+<!-- 总断路器 -->
+<rect x="370" y="50" width="80" height="30" rx="5" fill="#1a1a3e" stroke="#ff6b6b" stroke-width="1.5"/>
+<text x="410" y="70" class="label" text-anchor="middle" fill="#ff6b6b">MCB 10A</text>
+<line x1="320" y1="65" x2="370" y2="65" stroke="#ff6b6b" stroke-width="2"/>
+
+<!-- 分支断路器 -->
+<!-- 工控机 -->
+<rect x="500" y="40" width="70" height="25" rx="3" fill="#1a1a3e" stroke="#ff6b6b" stroke-width="1"/>
+<text x="535" y="57" class="label-small" text-anchor="middle" fill="#ff6b6b">6A→工控机</text>
+<line x1="450" y1="55" x2="500" y2="52" stroke="#ff6b6b" stroke-width="1.5"/>
+
+<!-- 光源控制器 -->
+<rect x="500" y="70" width="70" height="25" rx="3" fill="#1a1a3e" stroke="#ff6b6b" stroke-width="1"/>
+<text x="535" y="87" class="label-small" text-anchor="middle" fill="#ff6b6b">6A→光源控</text>
+<line x1="450" y1="70" x2="500" y2="82" stroke="#ff6b6b" stroke-width="1.5"/>
+
+<!-- LRS-150-24 #1 -->
+<rect x="500" y="100" width="70" height="25" rx="3" fill="#1a1a3e" stroke="#ff6b6b" stroke-width="1"/>
+<text x="535" y="117" class="label-small" text-anchor="middle" fill="#ff6b6b">→LRS#1</text>
+<line x1="450" y1="75" x2="500" y2="112" stroke="#ff6b6b" stroke-width="1"/>
+
+<!-- LRS-150-24 #2 -->
+<rect x="580" y="100" width="70" height="25" rx="3" fill="#1a1a3e" stroke="#ff6b6b" stroke-width="1"/>
+<text x="615" y="117" class="label-small" text-anchor="middle" fill="#ff6b6b">→LRS#2</text>
+<line x1="570" y1="112" x2="580" y2="112" stroke="#ff6b6b" stroke-width="1"/>
+
+<!-- DC24V分配 -->
+<rect x="500" y="140" width="150" height="20" rx="3" fill="#0f3460" stroke="#4dabf7" stroke-width="1.5"/>
+<text x="575" y="155" class="label-bold" text-anchor="middle" fill="#4dabf7">DC24V端子排#1</text>
+<line x1="535" y1="125" x2="535" y2="140" stroke="#4dabf7" stroke-width="2"/>
+
+<rect x="500" y="170" width="150" height="20" rx="3" fill="#0f3460" stroke="#4dabf7" stroke-width="1.5"/>
+<text x="575" y="185" class="label-bold" text-anchor="middle" fill="#4dabf7">DC24V端子排#2</text>
+<line x1="615" y1="125" x2="615" y2="170" stroke="#4dabf7" stroke-width="2"/>
+
+<!-- DC24V负载 -->
+<rect x="670" y="140" width="90" height="18" rx="3" fill="#0f3460" stroke="#4dabf7" stroke-width="1"/>
+<text x="715" y="155" class="label-small" text-anchor="middle" fill="#4dabf7">PLC PM1207</text>
+<line x1="650" y1="150" x2="670" y2="150" stroke="#4dabf7" stroke-width="1"/>
+
+<rect x="670" y="165" width="90" height="18" rx="3" fill="#0f3460" stroke="#4dabf7" stroke-width="1"/>
+<text x="715" y="178" class="label-small" text-anchor="middle" fill="#4dabf7">传感器×2</text>
+<line x1="650" y1="175" x2="670" y2="175" stroke="#4dabf7" stroke-width="1"/>
+
+<rect x="670" y="190" width="90" height="18" rx="3" fill="#0f3460" stroke="#4dabf7" stroke-width="1"/>
+<text x="715" y="203" class="label-small" text-anchor="middle" fill="#4dabf7">电磁阀×4</text>
+<line x1="650" y1="180" x2="670" y2="200" stroke="#4dabf7" stroke-width="1"/>
+
+<rect x="670" y="215" width="90" height="18" rx="3" fill="#0f3460" stroke="#4dabf7" stroke-width="1"/>
+<text x="715" y="228" class="label-small" text-anchor="middle" fill="#4dabf7">频闪控×3</text>
+<line x1="650" y1="180" x2="670" y2="225" stroke="#4dabf7" stroke-width="1"/>
+
+<!-- === 网络拓扑 === -->
+<text x="400" y="280" class="label-bold" text-anchor="middle">网络拓扑（绿色线=GigE以太网）</text>
+
+<!-- 工控机 GigE#1 -->
+<rect x="60" y="310" width="100" height="40" rx="5" fill="#1a1a3e" stroke="#e8590c" stroke-width="2"/>
+<text x="110" y="325" class="label-bold" text-anchor="middle" fill="#e8590c">工控机</text>
+<text x="110" y="340" class="label-small" text-anchor="middle" fill="#e8590c">GigE#1 GigE#2</text>
+
+<!-- 16口交换机 -->
+<rect x="260" y="300" width="130" height="60" rx="5" fill="#0f3460" stroke="#51cf66" stroke-width="2"/>
+<text x="325" y="320" class="label-bold" text-anchor="middle" fill="#51cf66">16口千兆</text>
+<text x="325" y="340" class="label-small" text-anchor="middle" fill="#51cf66">工业交换机</text>
+<text x="325" y="355" class="label-small" text-anchor="middle" fill="#51cf66">TL-SG2216</text>
+
+<!-- 工控机→交换机 -->
+<line x1="160" y1="330" x2="260" y2="330" stroke="#51cf66" stroke-width="2"/>
+<line x1="160" y1="340" x2="260" y2="340" stroke="#51cf66" stroke-width="2"/>
+<text x="210" y="322" class="label-small" fill="#51cf66">2×CAT6</text>
+
+<!-- PLC→交换机 -->
+<rect x="260" y="380" width="100" height="30" rx="5" fill="#0f3460" stroke="#a0c4ff" stroke-width="2"/>
+<text x="310" y="400" class="label-bold" text-anchor="middle" fill="#a0c4ff">PLC S7-1214C</text>
+<line x1="310" y1="360" x2="310" y2="380" stroke="#a0c4ff" stroke-width="2"/>
+<text x="330" y="370" class="label-small" fill="#a0c4ff">PROFINET</text>
+
+<!-- 相机→交换机 -->
+<rect x="460" y="300" width="70" height="30" rx="3" fill="#0f3460" stroke="#4dabf7" stroke-width="1.5"/>
+<text x="495" y="320" class="label-small" text-anchor="middle" fill="#4dabf7">相机1~3</text>
+<line x1="390" y1="320" x2="460" y2="315" stroke="#4dabf7" stroke-width="1.5"/>
+
+<rect x="460" y="340" width="70" height="30" rx="3" fill="#0f3460" stroke="#4dabf7" stroke-width="1.5"/>
+<text x="495" y="360" class="label-small" text-anchor="middle" fill="#4dabf7">相机4~6</text>
+<line x1="390" y1="340" x2="460" y2="355" stroke="#4dabf7" stroke-width="1.5"/>
+
+<text x="430" y="290" class="label-small" fill="#4dabf7">6×CAT6屏蔽网线</text>
+
+<!-- MGV518-H2相机 -->
+<rect x="560" y="300" width="220" height="80" rx="5" fill="#0a1628" stroke="#4dabf7" stroke-width="1"/>
+<text x="670" y="315" class="label-bold" text-anchor="middle" fill="#4dabf7">度申 MGV518-H2 × 6</text>
+<text x="670" y="335" class="label-small" text-anchor="middle" fill="#4dabf7">500万像素彩色 | GigE | PoE</text>
+<text x="670" y="350" class="label-small" text-anchor="middle" fill="#4dabf7">29×29×31.5mm | C-mount</text>
+<text x="670" y="365" class="label-small" text-anchor="middle" fill="#4dabf7">GigEVision1.2 | GenICam</text>
+
+<!-- === PLC I/O信号拓扑 === -->
+<text x="400" y="430" class="label-bold" text-anchor="middle">PLC I/O信号拓扑（橙色=DI输入，红色=DO输出）</text>
+
+<!-- PLC -->
+<rect x="200" y="450" width="120" height="80" rx="5" fill="#0f3460" stroke="#ffd700" stroke-width="2"/>
+<text x="260" y="470" class="label-bold" text-anchor="middle" fill="#ffd700">S7-1214C</text>
+<text x="260" y="485" class="label-small" text-anchor="middle" fill="#ffd700">DC/DC/DC</text>
+<text x="260" y="500" class="label-small" text-anchor="middle" fill="#ffd700">+SM1223×2</text>
+<text x="260" y="515" class="label-small" text-anchor="middle" fill="#ffd700">+SM1223 RLY</text>
+
+<!-- DI输入 -->
+<rect x="40" y="455" width="80" height="25" rx="3" fill="#1a1a3e" stroke="#ff922b" stroke-width="1.5"/>
+<text x="80" y="472" class="label-small" text-anchor="middle" fill="#ff922b">光纤传感①</text>
+<line x1="120" y1="467" x2="200" y2="467" stroke="#ff922b" stroke-width="1.5"/>
+
+<rect x="40" y="485" width="80" height="25" rx="3" fill="#1a1a3e" stroke="#ff922b" stroke-width="1.5"/>
+<text x="80" y="502" class="label-small" text-anchor="middle" fill="#ff922b">光纤传感②</text>
+<line x1="120" y1="497" x2="200" y2="497" stroke="#ff922b" stroke-width="1.5"/>
+
+<rect x="40" y="515" width="80" height="15" rx="2" fill="#1a1a3e" stroke="#ff922b" stroke-width="1"/>
+<text x="80" y="525" class="label-small" text-anchor="middle" fill="#ff922b">急停+限位</text>
+
+<!-- DO输出 -->
+<rect x="370" y="455" width="80" height="25" rx="3" fill="#1a1a3e" stroke="#ff6b6b" stroke-width="1.5"/>
+<text x="410" y="472" class="label-small" text-anchor="middle" fill="#ff6b6b">电磁阀×4</text>
+<line x1="320" y1="467" x2="370" y2="467" stroke="#ff6b6b" stroke-width="1.5"/>
+
+<rect x="370" y="485" width="80" height="25" rx="3" fill="#1a1a3e" stroke="#ff6b6b" stroke-width="1.5"/>
+<text x="410" y="502" class="label-small" text-anchor="middle" fill="#ff6b6b">频闪触发×3</text>
+<line x1="320" y1="497" x2="370" y2="497" stroke="#ff6b6b" stroke-width="1.5"/>
+
+<rect x="370" y="515" width="80" height="15" rx="2" fill="#1a1a3e" stroke="#ff6b6b" stroke-width="1"/>
+<text x="410" y="525" class="label-small" text-anchor="middle" fill="#ff6b6b">DDR使能+其他</text>
+
+<!-- PC→PLC TCP/IP -->
+<rect x="560" y="465" width="180" height="40" rx="5" fill="#1a1a3e" stroke="#51cf66" stroke-width="2"/>
+<text x="650" y="485" class="label-bold" text-anchor="middle" fill="#51cf66">工控机→PLC</text>
+<text x="650" y="500" class="label-small" text-anchor="middle" fill="#51cf66">TCP/IP (AI识别结果→PLC→分选)</text>
+<line x1="320" y1="480" x2="560" y2="480" stroke="#51cf66" stroke-width="2" stroke-dasharray="6,3"/>
+
+</svg>
+</div>
+
+<!-- ===================== 关键尺寸标注表 ===================== -->
+<div class="svg-wrap">
+<p class="section-title">▎ 关键尺寸与装配参数速查表</p>
+<table>
+<tr><th>部件</th><th>外形尺寸(mm)</th><th>安装方式</th><th>关键接口</th><th>备注</th></tr>
+<tr><td>度申MGV518-H2相机</td><td>29×29×31.5</td><td>M3螺丝×4，L型支架</td><td>RJ45 GigE口×1，C-mount镜头口</td><td>支持PoE，可省独立供电线</td></tr>
+<tr><td>CST环形光源</td><td>外径约80-90mm</td><td>中心Φ25mm通孔，支架固定</td><td>SMP-03V-BC连接器(JST)</td><td>配光源控制器CST-DPS2460B-4TD</td></tr>
+<tr><td>DDR玻璃盘</td><td>Φ200~300(定制)</td><td>DD马达轴连接，减震平台承托</td><td>DD马达驱动器信号线</td><td>盘面边缘低压吸盘阵列</td></tr>
+<tr><td>精密振动盘</td><td>Φ150~200(定制)</td><td>减震平台上固定</td><td>DC24V供电+减速电机</td><td>出料口窄通道仅允许单颗粒通过</td></tr>
+<tr><td>S7-1214C PLC</td><td>130×100×75</td><td>DIN导轨安装</td><td>RJ45 PROFINET×1，接线端子</td><td>配PM1207电源+SM1223×2+SM1223RLY</td></tr>
+<tr><td>汇川400W伺服</td><td>电机约Φ60×170<br>驱动器约90×170×55</td><td>驱动器DIN导轨，电机法兰安装</td><td>CN1(控制)CN2(编码器)CN3(通信)</td><td>配S6-L-P00-5.0编码器线+S6-L-M00-5.0动力线</td></tr>
+<tr><td>工控机(4U)</td><td>约430×340×180</td><td>框架内固定或导轨</td><td>2×RJ45 GigE, 6×USB3.0, 2×RS232, HDMI×2</td><td>i7-12700+RTX3060+16GB+512GB SSD</td></tr>
+<tr><td>设备框架</td><td>≈1060×990×1850</td><td>6060立柱+4040横梁+角件</td><td>—</td><td>含钣金面板(前门/后板/侧板)</td></tr>
+<tr><td>空压机OTS-550×2</td><td>约600×350×700</td><td>地面独立放置</td><td>AC220V+Φ8气管输出</td><td>无油静音，50L储气罐</td></tr>
+</table>
+</div>
+
+<div class="notes">
+<strong>⚠️ 装配注意事项：</strong><br>
+1. 玻璃盘与DD马达的同心度是关键——偏心会导致颗粒偏离固定半径圈，影响定位精度<br>
+2. 6台相机需围绕盘面均匀分布，每台相机视野覆盖盘面边缘的颗粒路径<br>
+3. 所有相机网线必须使用<strong>屏蔽STP/SFTP CAT6</strong>，非屏蔽网线在工业电磁环境下会丢帧<br>
+4. 相机MGV518-H2支持<strong>PoE供电</strong>，如果交换机支持PoE(如TL-SG2216P)，可省去相机独立电源线<br>
+5. 低压吸盘系统需匹配DD马达转速——吸力过大会影响颗粒释放分选，过小则颗粒在旋转中脱离<br>
+6. PLC硬触发相机拍摄：光纤传感器→PLC DI→PLC计算抵达时间→PLC DO硬触发→相机快门+频闪闪光<br>
+7. 气动阀吹嘴安装角度需精确对准盘面边缘颗粒路径——偏差2°就可能导致吹气偏移<br>
+8. 减震平台必须位于设备底座——振动盘和DD马达的振动如果传导到相机，会导致图像模糊
+</div>
+
+</div>
+</body>
+</html>

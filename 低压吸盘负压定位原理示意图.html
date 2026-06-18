@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>低压吸盘负压定位原理——详细示意图</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0d1117; font-family: "Microsoft YaHei", sans-serif; color: #e0e0e0; }
+.container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+h1 { font-size: 22px; text-align: center; color: #ffd700; margin-bottom: 3px; }
+h2 { font-size: 13px; text-align: center; color: #a0c4ff; margin-bottom: 18px; }
+.section { background: #161b22; border-radius: 12px; padding: 18px; margin-bottom: 18px; border: 1px solid #30363d; }
+.section-title { color: #ffd700; font-size: 14px; border-bottom: 1px solid #30363d; padding-bottom: 8px; margin-bottom: 12px; font-weight: bold; }
+svg { width: 100%; height: auto; }
+.explain { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 14px; margin-top: 10px; font-size: 13px; line-height: 1.9; }
+.explain strong { color: #ffd700; }
+.force { color: #ff6b6b; }
+.vacuum { color: #4dabf7; }
+.green { color: #51cf66; }
+table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+th { background: #1f2937; color: #ffd700; padding: 7px 10px; font-size: 12px; }
+td { background: #161b22; color: #e0e0e0; padding: 6px 10px; font-size: 12px; border-bottom: 1px solid #30363d; }
+.key-point { background: #1a1a2e; border-left: 3px solid #ffd700; padding: 10px 14px; margin: 10px 0; border-radius: 0 6px 6px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>低压吸盘 · 负压定位原理详解</h1>
+<h2>一句话：玻璃盘边沿钻一圈微型孔 + 盘底环形密封腔抽负压 = 颗粒被"吸"在固定位置</h2>
+
+<!-- ====== 图1：核心剖面图 ====== -->
+<div class="section">
+<p class="section-title">▎ 图1 — 玻璃盘截面图（侧视）：空气怎么流的、颗粒怎么被吸住的</p>
+<svg viewBox="0 0 800 440" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrowRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+    <polygon points="0 0,8 3,0 6" fill="#ff6b6b"/>
+  </marker>
+  <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+    <polygon points="0 0,8 3,0 6" fill="#4dabf7"/>
+  </marker>
+  <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+    <polygon points="0 0,8 3,0 6" fill="#51cf66"/>
+  </marker>
+</defs>
+
+<rect x="0" y="0" width="800" height="440" fill="#161b22" rx="8"/>
+
+<!-- ====== 左侧剖面图 ====== -->
+<rect x="15" y="30" width="420" height="390" fill="#0d1117" rx="6" stroke="#30363d" stroke-width="1"/>
+<text x="225" y="52" font-size="12" fill="#ffd700" text-anchor="middle" font-weight="bold">剖面侧视图</text>
+
+<!-- 玻璃盘 -->
+<rect x="80" y="180" width="280" height="14" rx="2" fill="#1a3a5c" stroke="#4dabf7" stroke-width="2.5"/>
+<text x="220" y="174" font-size="11" fill="#4dabf7" text-anchor="middle" font-weight="bold">光学玻璃盘（厚8-12mm）</text>
+
+<!-- 真空孔（盘面上钻的微孔） -->
+<circle cx="130" cy="180" r="3" fill="#1a3a5c" stroke="#4dabf7" stroke-width="1.5"/>
+<circle cx="180" cy="180" r="3" fill="#1a3a5c" stroke="#4dabf7" stroke-width="1.5"/>
+<circle cx="230" cy="180" r="3" fill="#1a3a5c" stroke="#4dabf7" stroke-width="1.5"/>
+<circle cx="280" cy="180" r="3" fill="#1a3a5c" stroke="#4dabf7" stroke-width="1.5"/>
+<circle cx="330" cy="180" r="3" fill="#1a3a5c" stroke="#4dabf7" stroke-width="1.5"/>
+
+<!-- 孔标注 -->
+<text x="130" y="165" font-size="7" fill="#4dabf7" text-anchor="middle">Φ1.0mm</text>
+<text x="280" y="165" font-size="7" fill="#4dabf7" text-anchor="middle">Φ1.0mm</text>
+
+<!-- 颗粒在盘面上方 -->
+<circle cx="130" cy="172" r="7" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="180" cy="172" r="7" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="230" cy="172" r="7" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="280" cy="172" r="7" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="330" cy="172" r="7" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+
+<text x="130" y="157" font-size="7" fill="#FF9800" text-anchor="middle">颗粒</text>
+<text x="230" y="157" font-size="7" fill="#FF9800" text-anchor="middle">颗粒</text>
+
+<!-- 气流箭头（空气被吸入微孔） -->
+<path d="M 133 185 L 133 195" stroke="#4dabf7" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+<path d="M 233 185 L 233 195" stroke="#4dabf7" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+<path d="M 333 185 L 333 195" stroke="#4dabf7" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+<!-- 环形真空腔 -->
+<rect x="85" y="200" width="270" height="22" rx="4" fill="#0a1628" stroke="#4dabf7" stroke-width="2" stroke-dasharray="6,3"/>
+<text x="220" y="215" font-size="10" fill="#4dabf7" text-anchor="middle" font-weight="bold">环形真空密封腔（负压区 -5~-15kPa）</text>
+
+<!-- 密封圈 -->
+<rect x="80" y="198" width="10" height="26" rx="2" fill="#2d5016" stroke="#51cf66" stroke-width="1.5"/>
+<rect x="350" y="198" width="10" height="26" rx="2" fill="#2d5016" stroke="#51cf66" stroke-width="1.5"/>
+<text x="73" y="217" font-size="6" fill="#51cf66" text-anchor="middle">FKM</text>
+<text x="73" y="228" font-size="6" fill="#51cf66" text-anchor="middle">密封</text>
+
+<text x="362" y="217" font-size="6" fill="#51cf66" text-anchor="middle">FKM</text>
+<text x="362" y="228" font-size="6" fill="#51cf66" text-anchor="middle">密封</text>
+
+<line x1="115" y1="222" x2="115" y2="245" stroke="#4dabf7" stroke-width="1.5" stroke-dasharray="4,2"/>
+<line x1="340" y1="222" x2="340" y2="245" stroke="#4dabf7" stroke-width="1.5" stroke-dasharray="4,2"/>
+
+<!-- 管路连接 -->
+<rect x="195" y="232" width="50" height="10" rx="2" fill="#0d1117" stroke="#4dabf7" stroke-width="1"/>
+<text x="220" y="248" font-size="7" fill="#4dabf7" text-anchor="middle">接真空管路</text>
+
+<line x1="220" y1="242" x2="220" y2="265" stroke="#4dabf7" stroke-width="2"/>
+<text x="232" y="258" font-size="7" fill="#4dabf7">Φ8 PU管</text>
+
+<!-- 组件链路框 -->
+<rect x="145" y="265" width="150" height="85" rx="5" fill="#0d1117" stroke="#30363d" stroke-width="1"/>
+
+<!-- 真空过滤器 -->
+<rect x="160" y="270" width="120" height="14" rx="2" fill="#1a1a3e" stroke="#ff922b" stroke-width="1"/>
+<text x="220" y="281" font-size="7" fill="#ff922b" text-anchor="middle">② 微型真空过滤器(ZFA050)</text>
+
+<!-- 真空发生器 -->
+<rect x="160" y="288" width="120" height="14" rx="2" fill="#1a1a3e" stroke="#ff922b" stroke-width="1"/>
+<text x="220" y="299" font-size="7" fill="#ff922b" text-anchor="middle">③ 真空发生器(ZH13DS)</text>
+
+<!-- 调压阀 -->
+<rect x="160" y="306" width="120" height="14" rx="2" fill="#1a1a3e" stroke="#ff922b" stroke-width="1"/>
+<text x="220" y="317" font-size="7" fill="#ff922b" text-anchor="middle">④ 精密调压阀(IRV10)</text>
+
+<!-- 压力表 -->
+<rect x="160" y="324" width="120" height="14" rx="2" fill="#1a1a3e" stroke="#ff922b" stroke-width="1"/>
+<text x="220" y="335" font-size="7" fill="#ff922b" text-anchor="middle">⑤ 负压表(-0.1~0MPa)</text>
+
+<!-- 气源标注 -->
+<text x="175" y="360" font-size="7" fill="#888">← 来自空压机0.5MPa</text>
+<line x1="320" y1="280" x2="340" y2="280" stroke="#888" stroke-width="1"/>
+<line x1="340" y1="280" x2="340" y2="255" stroke="#888" stroke-width="1"/>
+<line x1="340" y1="255" x2="220" y2="255" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+
+<!-- ====== 右侧力分析图 ====== -->
+<rect x="460" y="30" width="320" height="390" fill="#0d1117" rx="6" stroke="#30363d" stroke-width="1"/>
+<text x="620" y="52" font-size="12" fill="#ffd700" text-anchor="middle" font-weight="bold">单颗颗粒受力分析</text>
+
+<!-- 放大颗粒 -->
+<circle cx="620" cy="140" r="32" fill="#FF9800" stroke="#fff" stroke-width="2.5"/>
+<text x="620" y="143" font-size="9" fill="#fff" text-anchor="middle" font-weight="bold">碲化铋</text>
+<text x="620" y="153" font-size="7" fill="#fff" text-anchor="middle">颗粒</text>
+
+<!-- 玻璃盘面 -->
+<line x1="560" y1="170" x2="680" y2="170" stroke="#4dabf7" stroke-width="3"/>
+<text x="620" y="182" font-size="9" fill="#4dabf7" text-anchor="middle">玻璃盘面</text>
+
+<!-- 真空孔 -->
+<circle cx="620" cy="170" r="3" fill="#1a3a5c" stroke="#4dabf7" stroke-width="1.5"/>
+<line x1="620" y1="173" x2="620" y2="180" stroke="#4dabf7" stroke-width="1" stroke-dasharray="2,2"/>
+
+<!-- 力矢量箭头 -->
+<!-- 负压吸附力（向下） -->
+<line x1="605" y1="172" x2="585" y2="232" stroke="#4dabf7" stroke-width="4" marker-end="url(#arrowBlue)"/>
+<line x1="635" y1="172" x2="655" y2="232" stroke="#4dabf7" stroke-width="4" marker-end="url(#arrowBlue)"/>
+<text x="550" y="245" font-size="12" fill="#4dabf7" font-weight="bold">负压吸附力 F吸 ↓</text>
+<text x="550" y="258" font-size="9" fill="#4dabf7">= ΔP × S</text>
+<text x="550" y="270" font-size="8" fill="#4dabf7">= 10kPa × 3mm²</text>
+<text x="550" y="282" font-size="8" fill="#4dabf7">= 0.03 N</text>
+<text x="550" y="294" font-size="8" fill="#4dabf7">（足够大）</text>
+
+<!-- 离心力（向外） -->
+<line x1="652" y1="140" x2="702" y2="140" stroke="#ff6b6b" stroke-width="3" marker-end="url(#arrowRed)"/>
+<text x="680" y="135" font-size="9" fill="#ff6b6b">离心力→</text>
+<text x="680" y="125" font-size="8" fill="#ff6b6b">F离 ≈ 0.00006 N</text>
+<text x="680" y="115" font-size="8" fill="#ff6b6b">（极小）</text>
+
+<!-- 重力 -->
+<line x1="620" y1="108" x2="620" y2="80" stroke="#51cf66" stroke-width="2" marker-end="url(#arrowGreen)"/>
+<text x="626" y="78" font-size="8" fill="#51cf66">重力↓</text>
+<text x="626" y="68" font-size="8" fill="#51cf66">~0.0005 N</text>
+
+<!-- 结论框 -->
+<rect x="490" y="310" width="260" height="95" rx="5" fill="#1a1a2e" stroke="#ffd700" stroke-width="1.5"/>
+<text x="620" y="332" font-size="11" fill="#ffd700" text-anchor="middle" font-weight="bold">✅ 力平衡结论</text>
+<text x="620" y="350" font-size="9" fill="#e0e0e0" text-anchor="middle">F吸(0.03N) ＞＞ F离(0.00006N)</text>
+<text x="620" y="367" font-size="9" fill="#e0e0e0" text-anchor="middle">负压吸附力比离心力大<strong>500倍</strong></text>
+<text x="620" y="384" font-size="9" fill="#51cf66" text-anchor="middle">颗粒被牢牢固定在盘面位置</text>
+<text x="620" y="401" font-size="8" fill="#ffd700" text-anchor="middle">旋转中绝对不偏移</text>
+
+</svg>
+</div>
+
+<!-- ====== 图2：俯视图 ====== -->
+<div class="section">
+<p class="section-title">▎ 图2 — 玻璃盘俯视图：颗粒排列在固定半径圈上，像钟表刻度</p>
+<svg viewBox="0 0 750 420" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="750" height="420" fill="#161b22" rx="8"/>
+
+<!-- 盘面 -->
+<circle cx="350" cy="210" r="180" fill="#0d1117" stroke="#4dabf7" stroke-width="3"/>
+<circle cx="350" cy="210" r="140" fill="none" stroke="#4dabf7" stroke-width="1.5" stroke-dasharray="6,4"/>
+<circle cx="350" cy="210" r="80" fill="none" stroke="#30363d" stroke-width="1" stroke-dasharray="3,3"/>
+
+<text x="350" y="370" font-size="10" fill="#4dabf7" text-anchor="middle">旋转方向 →</text>
+<!-- 旋转弧线 -->
+<path d="M 350 30 A 180 180 0 0 1 530 210" fill="none" stroke="#4dabf7" stroke-width="2" marker-end="url(#arrowBlue)"/>
+
+<!-- 固定半径吸附轨道 -->
+<circle cx="350" cy="210" r="140" fill="none" stroke="#51cf66" stroke-width="2" stroke-dasharray="8,3"/>
+<text x="495" y="75" font-size="9" fill="#51cf66">← 固定吸附半径圈</text>
+
+<!-- 真空孔表示（沿吸附圈标注） -->
+<text x="350" y="60" font-size="7" fill="#4dabf7" text-anchor="middle">··· 微型真空孔(Φ0.8~1.2mm) ···</text>
+
+<!-- 颗粒在吸附圈上排列 -->
+<circle cx="490" cy="210" r="6" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="470" cy="135" r="6" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="430" cy="82" r="6" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="370" cy="60" r="6" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="310" cy="65" r="6" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="250" cy="92" r="6" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="210" cy="140" r="6" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="210" cy="280" r="6" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="250" cy="325" r="6" fill="#ff6b6b" stroke="#fff" stroke-width="1.5"/>
+<circle cx="310" cy="350" r="6" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="410" cy="345" r="6" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="350" cy="210" r="6" fill="#4dabf7" stroke="#fff" stroke-width="1"/>
+<line x1="350" y1="210" x2="310" y2="350" stroke="#4dabf7" stroke-width="0.5" stroke-dasharray="2,2"/>
+
+<!-- 盘面中心标注 -->
+<text x="350" y="215" font-size="8" fill="#4dabf7" text-anchor="middle">DDR马达</text>
+<text x="350" y="226" font-size="7" fill="#4dabf7" text-anchor="middle">(盘面中心)</text>
+
+<!-- 关键标注线 -->
+<line x1="490" y1="210" x2="350" y2="210" stroke="#ffd700" stroke-width="0.8" stroke-dasharray="3,2"/>
+<text x="420" y="206" font-size="7" fill="#ffd700">半径R(固定吸附半径)</text>
+
+<!-- 角度标注 -->
+<path d="M 490 210 A 140 140 0 0 1 470 135" fill="none" stroke="#ffd700" stroke-width="1"/>
+<text x="505" y="172" font-size="7" fill="#ffd700">间隙=15~20mm</text>
+
+<!-- 底部力示意 -->
+<rect x="480" y="280" width="250" height="25" rx="3" fill="#0d1117" stroke="#4dabf7"/>
+<text x="605" y="296" font-size="8" fill="#4dabf7" text-anchor="middle">⬆ 负压吸附力 = 每个颗粒都被"吸"在圆环上</text>
+
+<rect x="480" y="310" width="250" height="25" rx="3" fill="#0d1117" stroke="#ff6b6b"/>
+<text x="605" y="326" font-size="8" fill="#ff6b6b" text-anchor="middle">⬅ 离心力（旋转时想甩出去）</text>
+
+<rect x="480" y="340" width="250" height="25" rx="3" fill="#0d1117" stroke="#51cf66"/>
+<text x="605" y="356" font-size="8" fill="#51cf66" text-anchor="middle">✅ 吸附力 >> 离心力 → 颗粒固定不偏移</text>
+
+<!-- 图例 -->
+<rect x="30" y="355" width="200" height="55" rx="4" fill="#0d1117" stroke="#30363d"/>
+<circle cx="50" cy="375" r="5" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<text x="65" y="379" font-size="8" fill="#e0e0e0">OK颗粒（绿色）</text>
+<circle cx="50" cy="393" r="5" fill="#ff6b6b" stroke="#fff" stroke-width="1"/>
+<text x="65" y="397" font-size="8" fill="#e0e0e0">NG颗粒（红色，待分选）</text>
+</svg>
+</div>
+
+<!-- ====== 图3：物理原理漫画版 ====== -->
+<div class="section">
+<p class="section-title">▎ 图3 — 用"吸管"类比：理解为什么颗粒不会乱跑</p>
+<svg viewBox="0 0 750 250" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="750" height="250" fill="#161b22" rx="8"/>
+
+<text x="375" y="24" font-size="12" fill="#ffd700" text-anchor="middle" font-weight="bold">类比：就像用吸管吸住乒乓球——孔越多、吸力越稳</text>
+
+<!-- 第1幅：吸管吸乒乓球 -->
+<rect x="30" y="40" width="210" height="195" rx="5" fill="#0d1117" stroke="#30363d"/>
+<text x="135" y="60" font-size="10" fill="#888" text-anchor="middle">① 一根吸管吸住一个球</text>
+
+<circle cx="135" cy="110" r="20" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<rect x="125" y="125" width="20" height="30" rx="2" fill="#4dabf7" opacity="0.5"/>
+<polygon points="135,155 140,175 130,175" fill="#4dabf7"/>
+<text x="135" y="190" font-size="8" fill="#4dabf7" text-anchor="middle">气流吸入↓</text>
+
+<text x="135" y="210" font-size="7" fill="#888" text-anchor="middle">吸管 = 真空孔</text>
+<text x="135" y="222" font-size="7" fill="#888" text-anchor="middle">吸力 = 负压</text>
+
+<!-- 箭头 -->
+<text x="250" y="140" font-size="16" fill="#ffd700">→</text>
+
+<!-- 第2幅：多吸管吸多个球 -->
+<rect x="270" y="40" width="210" height="195" rx="5" fill="#0d1117" stroke="#30363d"/>
+<text x="375" y="60" font-size="10" fill="#888" text-anchor="middle">② 一圈吸管同时抽气</text>
+
+<circle cx="315" cy="110" r="20" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="375" cy="110" r="20" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="435" cy="110" r="20" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+
+<rect x="365" y="125" width="20" height="30" rx="2" fill="#4dabf7" opacity="0.5"/>
+<polygon points="375,155 380,175 370,175" fill="#4dabf7"/>
+
+<text x="375" y="190" font-size="8" fill="#4dabf7" text-anchor="middle">所有吸管共用</text>
+<text x="375" y="202" font-size="8" fill="#4dabf7" text-anchor="middle">同一负压源</text>
+
+<text x="375" y="218" font-size="7" fill="#ff6b6b" text-anchor="middle">⚠ 不能单独关一根</text>
+<text x="375" y="230" font-size="7" fill="#ff6b6b" text-anchor="middle">关了全线都关</text>
+
+<!-- 箭头 -->
+<text x="490" y="140" font-size="16" fill="#ffd700">→</text>
+
+<!-- 第3幅：转盘旋转 -->
+<rect x="510" y="40" width="210" height="195" rx="5" fill="#0d1117" stroke="#30363d"/>
+<text x="615" y="60" font-size="10" fill="#888" text-anchor="middle">③ 盘子旋转，球不会飞</text>
+
+<circle cx="615" cy="100" r="40" fill="none" stroke="#4dabf7" stroke-width="2"/>
+<line x1="615" y1="100" x2="655" y2="100" stroke="#4dabf7" stroke-width="1"/>
+
+<circle cx="655" cy="100" r="8" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<text x="670" y="85" font-size="7" fill="#ff6b6b">离心力→?</text>
+<text x="670" y="95" font-size="7" fill="#4dabf7">←被吸住</text>
+
+<circle cx="615" cy="140" r="8" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="575" cy="100" r="8" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+
+<text x="615" y="165" font-size="8" fill="#51cf66" text-anchor="middle">吸力 500× 离心力</text>
+<text x="615" y="178" font-size="8" fill="#51cf66" text-anchor="middle">颗粒纹丝不动</text>
+
+<text x="615" y="195" font-size="7" fill="#ffd700" text-anchor="middle">真空腔全程开启</text>
+<text x="615" y="207" font-size="7" fill="#ffd700" text-anchor="middle">从入料到分选</text>
+</svg>
+</div>
+
+<!-- ====== 文字说明 ====== -->
+<div class="section">
+<p class="section-title">▎ 核心原理总结</p>
+<div class="explain">
+
+<strong>一、负压从哪来？</strong><br>
+空压机(已有) → 压缩空气 → <strong>真空发生器</strong>(利用伯努利原理，正压变负压) → <strong>精密调压阀</strong>(锁定到-5~-15kPa) → 环形真空腔。<br>
+全程<strong>无需单独真空泵</strong>，不用电，靠气路转换。<br><br>
+
+<strong>二、颗粒怎么被"吸住"？</strong><br>
+① 玻璃盘边缘钻一圈微型孔(Φ0.8~1.2mm)<br>
+② 盘底用两条FKM密封圈围成环形腔<br>
+③ 环形腔抽负压(-5~-15kPa)<br>
+④ 空气从盘面→微孔→吸入环形腔→排出<br>
+⑤ 颗粒恰好盖在微孔上 → 气流路径被堵 → 颗粒受负压差吸附<br>
+⑥ 每个颗粒被吸在固定半径上，像钟表刻度均匀排列<br><br>
+
+<strong>三、为什么吸力刚好够？</strong><br>
+<span class="force">离心力</span>极小(颗粒质量0.01~0.05g，线速度~0.4m/s) ≈ <strong>0.00006 N</strong><br>
+<span class="vacuum">负压吸附力</span>(10kPa × 3mm²) ≈ <strong>0.03 N</strong><br>
+→ 吸附力是离心力的<strong>约500倍</strong>，颗粒旋转中绝对不偏移<br>
+→ 负压仅-5~-15kPa(极低)，不损伤脆性碲化铋颗粒和表面镀层<br><br>
+
+<strong>四、为什么不能"单独控制每个孔"？</strong><br>
+环形密封腔是<strong>一个连通的整体</strong>，所有微孔共享同一个负压源——像一根主管道上分出的几十根吸管。<br>
+<span class="force">无法单独关掉某一个颗粒位置的负压</span>——关了整圈全关，盘面所有颗粒同时释放。<br>
+因此<strong>所有颗粒（含OK）都必须通过喷吹离开盘面</strong>，而不是通过"关闭负压自然落下"。<br><br>
+
+<strong>五、真空系统组件清单（刚才已加入采购清单）：</strong>
+<table>
+<tr><th>序号</th><th>组件</th><th>型号</th><th>作用</th><th>约价</th></tr>
+<tr><td>1</td><td>真空发生器</td><td>SMC ZH13DS-06-08</td><td>正压→负压转换</td><td>250元</td></tr>
+<tr><td>2</td><td>精密调压阀</td><td>SMC IRV10-C06BG</td><td>精确控制-5~-15kPa</td><td>350元</td></tr>
+<tr><td>3</td><td>FKM密封圈×2</td><td>定制Φ350/Φ450</td><td>环形腔密封</td><td>220元</td></tr>
+<tr><td>4</td><td>真空过滤器</td><td>SMC ZFA050-01</td><td>防碎屑堵塞</td><td>60元</td></tr>
+<tr><td>5</td><td>负压表</td><td>0~-0.1MPa</td><td>实时监测</td><td>50元</td></tr>
+<tr><td>6</td><td>管路接头</td><td>Φ8快插套件</td><td>气路连接</td><td>80元</td></tr>
+<tr><td>7</td><td>玻璃盘钻孔</td><td>激光加工</td><td>微孔加工</td><td>500元</td></tr>
+</table>
+</div>
+</div>
+
+</div>
+</body>
+</html>

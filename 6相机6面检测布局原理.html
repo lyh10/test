@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>6相机6面检测——相机布局与拍摄原理详解</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0d1117; font-family: "Microsoft YaHei", sans-serif; color: #e0e0e0; }
+.container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+h1 { font-size: 22px; text-align: center; color: #ffd700; margin-bottom: 3px; }
+h2 { font-size: 13px; text-align: center; color: #a0c4ff; margin-bottom: 18px; }
+.section { background: #161b22; border-radius: 12px; padding: 18px; margin-bottom: 18px; border: 1px solid #30363d; }
+.section-title { color: #ffd700; font-size: 14px; border-bottom: 1px solid #30363d; padding-bottom: 8px; margin-bottom: 12px; font-weight: bold; }
+svg { width: 100%; height: auto; }
+.explain { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 14px; margin-top: 10px; font-size: 13px; line-height: 1.9; }
+.explain strong { color: #ffd700; }
+table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+th { background: #1f2937; color: #ffd700; padding: 7px 10px; font-size: 11px; }
+td { background: #161b22; color: #e0e0e0; padding: 6px 10px; font-size: 11px; border-bottom: 1px solid #30363d; }
+.note { background: #1a1a2e; border-left: 3px solid #ffd700; padding: 8px 12px; margin: 8px 0; font-size: 12px; border-radius: 0 6px 6px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>6相机如何完整拍摄一颗颗粒的6个面？</h1>
+<h2>核心答案：1个俯视 + 1个仰视（透过玻璃盘）+ 4个侧面（不同角度）</h2>
+
+<!-- ====== 图1：整体俯视图 ====== -->
+<div class="section">
+<p class="section-title">▎ 图1 — 俯视图：6台相机在玻璃盘周围的布局</p>
+<svg viewBox="0 0 800 520" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arw" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#4dabf7"/></marker>
+  <marker id="arwO" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#FF9800"/></marker>
+</defs>
+<rect x="0" y="0" width="800" height="520" fill="#161b22" rx="8"/>
+
+<!-- 玻璃盘 -->
+<circle cx="330" cy="260" r="190" fill="#0d1117" stroke="#4dabf7" stroke-width="3"/>
+<circle cx="330" cy="260" r="150" fill="none" stroke="#4dabf7" stroke-width="1.5" stroke-dasharray="8,4"/>
+<text x="330" y="460" font-size="10" fill="#4dabf7" text-anchor="middle">旋转方向 →</text>
+<path d="M 330 70 A 190 190 0 0 1 520 260" fill="none" stroke="#4dabf7" stroke-width="2" marker-end="url(#arw)"/>
+
+<!-- 颗粒吸附圈 -->
+<circle cx="330" cy="260" r="150" fill="none" stroke="#51cf66" stroke-width="2" stroke-dasharray="6,3"/>
+<text x="490" y="110" font-size="9" fill="#51cf66">固定吸附半径圈</text>
+
+<!-- 颗粒 -->
+<circle cx="480" cy="260" r="6" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="450" cy="180" r="6" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="390" cy="118" r="6" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="310" cy="95" r="6" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="240" cy="115" r="6" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="190" cy="165" r="6" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="180" cy="230" r="6" fill="#ff6b6b" stroke="#fff" stroke-width="1"/>
+<circle cx="190" cy="290" r="6" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="240" cy="360" r="6" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+<circle cx="310" cy="380" r="6" fill="#FF9800" stroke="#fff" stroke-width="1"/>
+
+<!-- ====== 6台相机布局 ====== -->
+<!-- 相机1：侧面，0°位置 -->
+<rect x="498" y="248" width="28" height="22" rx="3" fill="#4CAF50" opacity="0.8"/>
+<text x="512" y="263" font-size="7" fill="#fff" text-anchor="middle">C1</text>
+<text x="520" y="272" font-size="6" fill="#51cf66" text-anchor="middle">侧面</text>
+<line x1="498" y1="260" x2="483" y2="260" stroke="#51cf66" stroke-width="1.5"/>
+
+<!-- 相机2：侧面，60° -->
+<rect x="460" y="165" width="28" height="22" rx="3" fill="#4CAF50" opacity="0.8" transform="rotate(-30 474 176)"/>
+<text x="474" y="180" font-size="7" fill="#fff" text-anchor="middle">C2</text>
+<text x="482" y="190" font-size="6" fill="#51cf66">侧面</text>
+
+<!-- 相机3：俯视，120° -->
+<rect x="375" y="90" width="28" height="22" rx="3" fill="#2196F3" opacity="0.9"/>
+<text x="389" y="105" font-size="7" fill="#fff" text-anchor="middle">C3</text>
+<text x="397" y="115" font-size="6" fill="#4dabf7">俯视↓</text>
+
+<!-- 相机4：侧面，180° -->
+<rect x="232" y="88" width="28" height="22" rx="3" fill="#4CAF50" opacity="0.8"/>
+<text x="246" y="103" font-size="7" fill="#fff" text-anchor="middle">C4</text>
+<text x="254" y="113" font-size="6" fill="#51cf66">侧面</text>
+
+<!-- 相机5：仰视（下方），240° -->
+<rect x="160" y="225" width="26" height="14" rx="2" fill="#FF9800" opacity="0.9"/>
+<text x="173" y="234" font-size="6" fill="#fff" text-anchor="middle">C5↓</text>
+<text x="178" y="244" font-size="6" fill="#FF9800">仰视</text>
+<!-- 表示从下方 -->
+<rect x="160" y="278" width="26" height="14" rx="2" fill="#FF9800" opacity="0.6"/>
+<text x="173" y="287" font-size="6" fill="#fff" text-anchor="middle">(盘下)</text>
+
+<!-- 相机6：侧面，300° -->
+<rect x="230" y="378" width="28" height="22" rx="3" fill="#4CAF50" opacity="0.8"/>
+<text x="244" y="393" font-size="7" fill="#fff" text-anchor="middle">C6</text>
+<text x="252" y="403" font-size="6" fill="#51cf66">侧面</text>
+
+<!-- 上料口 -->
+<rect x="515" y="225" width="14" height="14" rx="2" fill="#ff6b6b"/>
+<text x="522" y="236" font-size="6" fill="#fff" text-anchor="middle">入</text>
+
+<!-- 分选口 -->
+<rect x="515" y="290" width="14" height="14" rx="2" fill="#9C27B0"/>
+<text x="522" y="301" font-size="6" fill="#fff" text-anchor="middle">分</text>
+
+<!-- 图例 -->
+<rect x="580" y="130" width="200" height="160" rx="5" fill="#0d1117" stroke="#30363d"/>
+<text x="690" y="150" font-size="10" fill="#ffd700" text-anchor="middle" font-weight="bold">图例</text>
+<rect x="595" y="160" width="14" height="10" rx="2" fill="#4CAF50"/>
+<text x="615" y="169" font-size="8" fill="#51cf66">侧面相机 ×4 (C1,C2,C4,C6)</text>
+<rect x="595" y="180" width="14" height="10" rx="2" fill="#2196F3"/>
+<text x="615" y="189" font-size="8" fill="#4dabf7">俯视相机 ×1 (C3)</text>
+<rect x="595" y="200" width="14" height="10" rx="2" fill="#FF9800"/>
+<text x="615" y="209" font-size="8" fill="#FF9800">仰视相机 ×1 (C5,盘下)</text>
+<circle cx="602" cy="223" r="4" fill="#FF9800" stroke="#fff"/>
+<text x="615" y="227" font-size="8" fill="#FF9800">颗粒</text>
+<text x="680" y="250" font-size="7" fill="#888">ⓘ 侧面相机间距约90°</text>
+<text x="680" y="265" font-size="7" fill="#888">俯视+仰视穿插其中</text>
+<text x="680" y="280" font-size="7" fill="#888">共6个工位覆盖6面</text>
+</svg>
+
+<div class="note"><strong>要点</strong>：6台相机并非都在同一高度。4台在盘面侧上方拍摄侧面，1台在上方俯拍顶面，1台在盘下方仰拍底面（透过透明玻璃盘）。颗粒随盘旋转一圈，依次经过6个工位，每个工位拍一个面。</div>
+</div>
+
+<!-- ====== 图2：侧视图 ====== -->
+<div class="section">
+<p class="section-title">▎ 图2 — 侧视剖面图：俯视相机、仰视相机、侧面相机的拍摄角度</p>
+<svg viewBox="0 0 800 460" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="aR" markerWidth="8" markerHeight="6" refX="8" refY="3"><polygon points="0 0,8 3,0 6" fill="#ff6b6b"/></marker>
+  <marker id="aB" markerWidth="8" markerHeight="6" refX="8" refY="3"><polygon points="0 0,8 3,0 6" fill="#4dabf7"/></marker>
+</defs>
+<rect x="0" y="0" width="800" height="460" fill="#161b22" rx="8"/>
+
+<!-- 玻璃盘 -->
+<rect x="200" y="230" width="400" height="12" rx="2" fill="#1a3a5c" stroke="#4dabf7" stroke-width="3"/>
+<text x="600" y="245" font-size="9" fill="#4dabf7">光学玻璃盘</text>
+
+<!-- 环形真空腔 -->
+<rect x="230" y="242" width="280" height="16" rx="3" fill="#0a1628" stroke="#4dabf7" stroke-width="1.5" stroke-dasharray="4,2"/>
+<text x="370" y="254" font-size="7" fill="#4dabf7" text-anchor="middle">环形真空腔(-5~-15kPa)</text>
+
+<!-- 颗粒 -->
+<circle cx="370" cy="222" r="8" fill="#FF9800" stroke="#fff" stroke-width="1.5"/>
+<text x="370" y="215" font-size="8" fill="#fff" text-anchor="middle">颗粒</text>
+
+<!-- ====== 俯视相机(C3) ====== -->
+<rect x="350" y="30" width="40" height="25" rx="3" fill="#2196F3"/>
+<text x="370" y="40" font-size="7" fill="#fff" text-anchor="middle">C3</text>
+<text x="370" y="52" font-size="6" fill="#fff" text-anchor="middle">俯视</text>
+
+<!-- C3 镜头 -->
+<rect x="360" y="55" width="20" height="30" rx="2" fill="#1a3a5c" stroke="#2196F3" stroke-width="1"/>
+<line x1="370" y1="85" x2="370" y2="222" stroke="#2196F3" stroke-width="2.5" stroke-dasharray="6,3"/>
+<text x="380" y="150" font-size="9" fill="#2196F3" font-weight="bold">俯视光路 ↓</text>
+<text x="380" y="163" font-size="7" fill="#2196F3">拍摄 → <strong>顶面</strong></text>
+
+<!-- ====== 仰视相机(C5) - 盘下 ====== -->
+<rect x="350" y="380" width="40" height="25" rx="3" fill="#FF9800"/>
+<text x="370" y="392" font-size="7" fill="#fff" text-anchor="middle">C5</text>
+<text x="370" y="403" font-size="6" fill="#fff" text-anchor="middle">仰视</text>
+
+<rect x="360" y="325" width="20" height="55" rx="2" fill="#1a3a5c" stroke="#FF9800" stroke-width="1"/>
+<line x1="370" y1="325" x2="370" y2="240" stroke="#FF9800" stroke-width="2.5" stroke-dasharray="6,3"/>
+<text x="380" y="280" font-size="9" fill="#FF9800" font-weight="bold">仰视光路 ↑</text>
+<text x="380" y="293" font-size="7" fill="#FF9800">透过玻璃盘拍摄</text>
+<text x="380" y="306" font-size="7" fill="#FF9800">→ <strong>底面</strong></text>
+
+<!-- ====== 侧面相机(C1) - 左侧 ====== -->
+<rect x="60" y="200" width="40" height="25" rx="3" fill="#4CAF50"/>
+<text x="80" y="210" font-size="7" fill="#fff" text-anchor="middle">C1</text>
+<text x="80" y="222" font-size="6" fill="#fff" text-anchor="middle">侧面</text>
+
+<rect x="100" y="205" width="15" height="15" rx="2" fill="#1a3a5c" stroke="#4CAF50" stroke-width="1"/>
+<line x1="115" y1="212" x2="180" y2="222" stroke="#4CAF50" stroke-width="2"/>
+<text x="130" y="202" font-size="7" fill="#4CAF50">左侧面</text>
+
+<!-- 反射镜 -->
+<rect x="175" y="195" width="25" height="3" rx="1" fill="#888" transform="rotate(45 187 196)"/>
+<text x="168" y="192" font-size="6" fill="#888">反射镜</text>
+
+<line x1="260" y1="222" x2="187" y2="196" stroke="#4CAF50" stroke-width="1.5"/>
+<text x="215" y="210" font-size="7" fill="#4CAF50">←光路</text>
+
+<!-- ====== 侧面相机(C2) - 右斜 ====== -->
+<rect x="640" y="170" width="40" height="25" rx="3" fill="#4CAF50"/>
+<text x="660" y="180" font-size="7" fill="#fff" text-anchor="middle">C2</text>
+
+<line x1="640" y1="182" x2="560" y2="226" stroke="#4CAF50" stroke-width="2"/>
+<text x="585" y="200" font-size="7" fill="#4CAF50">斜侧面→</text>
+
+<!-- ====== 侧面相机(C4) - 右侧 ====== -->
+<rect x="700" y="220" width="40" height="25" rx="3" fill="#4CAF50"/>
+<text x="720" y="230" font-size="7" fill="#fff" text-anchor="middle">C4</text>
+
+<line x1="700" y1="232" x2="480" y2="226" stroke="#4CAF50" stroke-width="2" stroke-dasharray="6,3"/>
+<text x="600" y="238" font-size="7" fill="#4CAF50">右侧面→</text>
+
+<!-- 标注：侧面相机拍什么 -->
+<rect x="580" y="350" width="200" height="95" rx="5" fill="#0d1117" stroke="#30363d"/>
+<text x="680" y="368" font-size="9" fill="#ffd700" text-anchor="middle" font-weight="bold">侧面相机工作原理</text>
+<text x="595" y="385" font-size="8" fill="#51cf66">4台侧面相机(C1,C2,C4,C6)</text>
+<text x="595" y="398" font-size="8" fill="#e0e0e0">布置在盘面侧上方45°倾斜</text>
+<text x="595" y="411" font-size="8" fill="#e0e0e0">每台间距≈90°，各拍一个侧面</text>
+<text x="595" y="424" font-size="8" fill="#e0e0e0">反射镜折转光路(紧凑空间)</text>
+<text x="595" y="437" font-size="8" fill="#e0e0e0">颗粒旋转经过时依次被拍摄</text>
+
+<!-- 汇总标注 -->
+<rect x="40" y="350" width="520" height="60" rx="5" fill="#0d1117" stroke="#ffd700" stroke-width="1"/>
+<text x="300" y="372" font-size="10" fill="#ffd700" text-anchor="middle" font-weight="bold">6面拍摄 = 顶面(C3俯视) + 底面(C5仰视穿透玻璃) + 4个侧面(C1,C2,C4,C6从四个方向斜拍)</text>
+<text x="300" y="392" font-size="9" fill="#e0e0e0" text-anchor="middle">颗粒随玻璃盘旋转一圈 → 依次经过6个工位 → 每个工位拍一面 → 6面全表面覆盖</text>
+</svg>
+</div>
+
+<!-- ====== 图3：时间轴 ====== -->
+<div class="section">
+<p class="section-title">▎ 图3 — 时间轴：一颗颗粒如何依次被6台相机拍摄</p>
+<svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="800" height="280" fill="#161b22" rx="8"/>
+
+<!-- 时间轴 -->
+<line x1="60" y1="100" x2="750" y2="100" stroke="#4dabf7" stroke-width="2.5"/>
+<polygon points="755,97 755,103 763,100" fill="#4dabf7"/>
+<text x="770" y="103" font-size="9" fill="#4dabf7">时间→</text>
+
+<!-- 第1站：C1 -->
+<circle cx="110" cy="100" r="6" fill="#4CAF50"/>
+<text x="95" y="80" font-size="9" fill="#4CAF50">C1侧面</text>
+<text x="190" y="80" font-size="8" fill="#888">(左面)</text>
+
+<!-- 第2站：C2 -->
+<circle cx="220" cy="100" r="6" fill="#4CAF50"/>
+<text x="205" y="80" font-size="9" fill="#4CAF50">C2侧面</text>
+<text x="300" y="80" font-size="8" fill="#888">(右前斜面)</text>
+
+<!-- 第3站：C3 俯视 -->
+<circle cx="330" cy="100" r="8" fill="#2196F3"/>
+<text x="315" y="75" font-size="9" fill="#2196F3">C3俯视</text>
+<text x="410" y="80" font-size="8" fill="#888">(顶面)</text>
+
+<!-- 第4站：C4 -->
+<circle cx="440" cy="100" r="6" fill="#4CAF50"/>
+<text x="425" y="80" font-size="9" fill="#4CAF50">C4侧面</text>
+<text x="520" y="80" font-size="8" fill="#888">(右面)</text>
+
+<!-- 第5站：C5 仰视 -->
+<circle cx="550" cy="100" r="8" fill="#FF9800"/>
+<text x="535" y="75" font-size="9" fill="#FF9800">C5仰视</text>
+<text x="630" y="80" font-size="8" fill="#888">(底面)</text>
+
+<!-- 第6站：C6 -->
+<circle cx="660" cy="100" r="6" fill="#4CAF50"/>
+<text x="645" y="80" font-size="9" fill="#4CAF50">C6侧面</text>
+<text x="740" y="80" font-size="8" fill="#888">(左后斜面)</text>
+
+<!-- 站间箭头 -->
+<line x1="140" y1="100" x2="195" y2="100" stroke="#4dabf7" stroke-width="1"/>
+<line x1="250" y1="100" x2="305" y2="100" stroke="#4dabf7" stroke-width="1"/>
+<line x1="360" y1="100" x2="415" y2="100" stroke="#4dabf7" stroke-width="1"/>
+<line x1="470" y1="100" x2="525" y2="100" stroke="#4dabf7" stroke-width="1"/>
+<line x1="580" y1="100" x2="635" y2="100" stroke="#4dabf7" stroke-width="1"/>
+
+<!-- 时刻标注 -->
+<text x="140" y="118" font-size="7" fill="#888">t₁</text>
+<text x="250" y="118" font-size="7" fill="#888">t₂</text>
+<text x="360" y="118" font-size="7" fill="#888">t₃</text>
+<text x="470" y="118" font-size="7" fill="#888">t₄</text>
+<text x="580" y="118" font-size="7" fill="#888">t₅</text>
+<text x="690" y="118" font-size="7" fill="#888">t₆</text>
+
+<!-- AI识别+分选 -->
+<line x1="660" y1="100" x2="740" y2="100" stroke="#4dabf7" stroke-width="1.5"/>
+<rect x="700" y="90" width="60" height="20" rx="3" fill="#9C27B0"/>
+<text x="730" y="104" font-size="7" fill="#fff" text-anchor="middle">分选</text>
+
+<!-- 下方标注：谁触发 -->
+<text x="60" y="145" font-size="9" fill="#ffd700" font-weight="bold">触发方式：PLC硬触发</text>
+<text x="60" y="160" font-size="8" fill="#e0e0e0">① 光纤传感器检测颗粒到达 → PLC记录位置</text>
+<text x="60" y="175" font-size="8" fill="#e0e0e0">② PLC根据DDR编码器角度实时计算颗粒位置</text>
+<text x="60" y="190" font-size="8" fill="#e0e0e0">③ 颗粒到达每个相机视野中心 → PLC硬触发相机快门 + 频闪闪光</text>
+<text x="60" y="205" font-size="8" fill="#e0e0e0">④ 6张图像全部传入工控机 → AI模型单帧≤100ms识别 → OK/NG/回收</text>
+
+<!-- 右侧总结 -->
+<rect x="500" y="150" width="270" height="75" rx="5" fill="#1a1a2e" stroke="#ffd700" stroke-width="1"/>
+<text x="635" y="170" font-size="9" fill="#ffd700" text-anchor="middle" font-weight="bold">一颗颗粒的完整拍摄之旅</text>
+<text x="520" y="188" font-size="8" fill="#e0e0e0">入料 → C1侧 → C2侧 → C3俯(顶面)</text>
+<text x="520" y="202" font-size="8" fill="#e0e0e0">→ C4侧 → C5仰(底面) → C6侧 → 分选</text>
+<text x="520" y="218" font-size="8" fill="#51cf66">旋转一圈 = 6面全拍 = 360°全表面覆盖</text>
+</svg>
+</div>
+
+<!-- ====== 参数表格 ====== -->
+<div class="section">
+<p class="section-title">▎ 6相机拍摄参数速查</p>
+<table>
+<tr><th>相机编号</th><th>类型</th><th>拍摄面</th><th>位置</th><th>角度</th><th>特殊说明</th></tr>
+<tr><td>C1</td><td>侧面</td><td>左侧面</td><td>盘面侧上方</td><td>~45°斜向下</td><td>配反射镜折转光路</td></tr>
+<tr><td>C2</td><td>侧面</td><td>右前面</td><td>盘面侧上方</td><td>~45°斜向下</td><td>与C1间距约90°</td></tr>
+<tr><td>C3</td><td><strong>俯视</strong></td><td><strong>顶面</strong></td><td>盘面正上方</td><td>垂直向下</td><td>拍颗粒顶部全貌</td></tr>
+<tr><td>C4</td><td>侧面</td><td>右侧面</td><td>盘面侧上方</td><td>~45°斜向下</td><td>与C2间距约90°</td></tr>
+<tr><td>C5</td><td><strong>仰视</strong></td><td><strong>底面</strong></td><td>盘面正下方</td><td>垂直向上</td><td>透过透明玻璃盘拍摄底面</td></tr>
+<tr><td>C6</td><td>侧面</td><td>左后面</td><td>盘面侧上方</td><td>~45°斜向下</td><td>与C4间距约90°</td></tr>
+</table>
+</div>
+
+<!-- ====== 原理总结 ====== -->
+<div class="section">
+<p class="section-title">▎ 原理解释</p>
+<div class="explain">
+
+<strong>一、为什么不是6台相机都在同一高度？</strong><br>
+如果6台相机都在盘面侧上方 → 只能拍到颗粒的6个<strong>倾斜侧面</strong>，拍不到纯<strong>顶面</strong>和纯<strong>底面</strong>。<br>
+正确的做法：<strong>1台俯视 + 1台仰视 + 4台侧面</strong>，才能真正覆盖6个不同的面。<br><br>
+
+<strong>二、仰视相机怎么拍到底面？</strong><br>
+玻璃盘是<strong>光学透明玻璃</strong>（透光率≥92%），颗粒底面直接接触玻璃盘面。<br>
+仰视相机置于盘面下方，透过玻璃拍摄，清晰捕获底面缺陷（掉镀层、脏污等）。<br>
+这是为什么一定要用<strong>玻璃盘</strong>而非金属盘的关键原因。<br><br>
+
+<strong>三、4台侧面相机为什么加反射镜？</strong><br>
+侧面相机需要<strong>斜向下约45°</strong>拍摄，但如果相机直接倾斜安装，占用空间太大。<br>
+解决方案（BOM中采购了8个反射镜）：<br>
+&nbsp;&nbsp;相机水平放置 → 光线打到45°反射镜 → 反射镜将光路折转向下 → 照到颗粒侧面<br>
+这样相机可以水平紧凑安装在盘面周围，省空间。<br><br>
+
+<strong>四、颗粒旋转过程中，6个相机怎么拍到6个不同的面？</strong><br>
+颗粒被低压吸盘固定在玻璃盘上，<strong>随盘面一起旋转</strong>（颗粒与盘面无相对转动）。<br>
+所以：
+- 转到C1位置 → C1看到的是颗粒的"面A"
+- 转到C2位置（盘转过约90°） → C2看到的是颗粒的"面B"（因为颗粒跟着转了90°）
+- 转到C3位置 → 俯视相机看到"面C"（顶面）
+- C5在盘下 → 仰视相机看到"面D"（底面）
+- C4、C6 → 分别看到"面E"和"面F"
+
+<strong>颗粒自己不需要翻转</strong>——它随盘面旋转，相机的方位角各不相同，自然拍到不同面。<br><br>
+
+<strong>五、和标谱六面检测机的设计一致</strong><br>
+标谱半导体六面外观检测机的原理描述完全吻合：<br>
+<em>"高透玻璃转盘带动元件匀速运转，6个相机从不同角度精准对焦，正面、反面、四个侧面的图像同步捕捉"</em><br>
+本项目采用同样的原理，适配碲化铋颗粒（0.8~2.5mm）。
+</div>
+</div>
+
+</div>
+</body>
+</html>
