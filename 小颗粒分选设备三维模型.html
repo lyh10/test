@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>碲化铋颗粒智能检测分选设备 - 三维模型</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #1a1a2e; font-family: "Microsoft YaHei", sans-serif; overflow: hidden; }
+#info { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 18px; font-weight: bold; z-index: 10; pointer-events: none; text-shadow: 0 0 10px rgba(0,0,0,0.8); }
+#legend { position: absolute; bottom: 20px; left: 20px; background: rgba(0,0,0,0.7); color: #ccc; padding: 12px 16px; border-radius: 8px; font-size: 11px; z-index: 10; line-height: 1.8; }
+#legend span { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+#controls { position: absolute; bottom: 20px; right: 20px; background: rgba(0,0,0,0.7); color: #aaa; padding: 8px 12px; border-radius: 6px; font-size: 10px; z-index: 10; }
+</style>
+</head>
+<body>
+<div id="info">碲化铋颗粒缺陷智能检测与分选设备 — 三维模型（外形 1060×990×1850 mm）</div>
+<div id="legend">
+<span style="background:#4dabf7;"></span> 透明防护罩 &emsp; <span style="background:#555;"></span> 金属柜体 &emsp; <span style="background:#4caf50;"></span> 相机×6<br>
+<span style="background:#ffd700;"></span> 玻璃转盘 &emsp; <span style="background:#ff6b6b;"></span> 分选通道 &emsp; <span style="background:#ff9800;"></span> 振动盘<br>
+<span style="background:#e8590c;"></span> 工控机/PLC &emsp; <span style="background:#a0c4ff;"></span> 操作面板
+</div>
+<div id="controls">鼠标左键旋转 | 滚轮缩放 | 右键平移</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+// 场景
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x1a1a2e);
+scene.fog = new THREE.Fog(0x1a1a2e, 3, 8);
+
+// 相机
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 20);
+camera.position.set(2.8, 2.0, 2.6);
+camera.lookAt(0, 0.3, 0);
+
+// 渲染器
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+document.body.appendChild(renderer.domElement);
+
+// CSS2D 渲染器 (标签)
+const labelRenderer = new CSS2DRenderer();
+labelRenderer.setSize(window.innerWidth, window.innerHeight);
+labelRenderer.domElement.style.position = 'absolute';
+labelRenderer.domElement.style.top = '0px';
+labelRenderer.domElement.style.pointerEvents = 'none';
+document.body.appendChild(labelRenderer.domElement);
+
+// 控制器
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 0.3, 0);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.minDistance = 1.2;
+controls.maxDistance = 6;
+controls.maxPolarAngle = Math.PI * 0.75;
+controls.update();
+
+// 光照
+const ambientLight = new THREE.AmbientLight(0x404060, 1.2);
+scene.add(ambientLight);
+
+const mainLight = new THREE.DirectionalLight(0xffffff, 2.5);
+mainLight.position.set(3, 5, 4);
+mainLight.castShadow = true;
+mainLight.shadow.mapSize.width = 2048;
+mainLight.shadow.mapSize.height = 2048;
+mainLight.shadow.camera.near = 0.5;
+mainLight.shadow.camera.far = 20;
+mainLight.shadow.camera.left = -5;
+mainLight.shadow.camera.right = 5;
+mainLight.shadow.camera.top = 5;
+mainLight.shadow.camera.bottom = -5;
+mainLight.shadow.bias = -0.0005;
+scene.add(mainLight);
+
+const fillLight = new THREE.DirectionalLight(0x8899cc, 0.6);
+fillLight.position.set(-2, 1, -2);
+scene.add(fillLight);
+
+const rimLight = new THREE.DirectionalLight(0xffffff, 0.4);
+rimLight.position.set(0, 0.5, 3);
+scene.add(rimLight);
+
+// 地面
+const groundGeo = new THREE.PlaneGeometry(8, 8);
+const groundMat = new THREE.MeshStandardMaterial({ color: 0x222233, roughness: 0.9 });
+const ground = new THREE.Mesh(groundGeo, groundMat);
+ground.rotation.x = -Math.PI / 2;
+ground.position.y = -1.05;
+ground.receiveShadow = true;
+scene.add(ground);
+
+// 网格地面
+const gridHelper = new THREE.PolarGridHelper(4, 32, 24, 64, 0x333366, 0x222244);
+gridHelper.position.y = -1.048;
+scene.add(gridHelper);
+
+// 缩放因子：1 单位 = 1 米，设备 1.06×0.99×1.85 米
+const sw = 1.06, sd = 0.99, sh = 1.85;
+const upperH = 0.95, lowerH = 0.90;
+
+// ===== 辅助函数 =====
+function createLabel(text, position, color = '#ffffff') {
+  const div = document.createElement('div');
+  div.textContent = text;
+  div.style.cssText = `color:${color};font-size:10px;font-weight:bold;text-shadow:0 0 4px rgba(0,0,0,0.8);white-space:nowrap;`;
+  const label = new CSS2DObject(div);
+  label.position.copy(position);
+  return label;
+}
+
+// ===== 下部金属柜体 (900mm) =====
+const cabinetGroup = new THREE.Group();
+
+// 主柜体
+const cabinetGeo = new THREE.BoxGeometry(sw, lowerH, sd);
+const cabinetMat = new THREE.MeshStandardMaterial({ color: 0x4a5568, roughness: 0.35, metalness: 0.6 });
+const cabinet = new THREE.Mesh(cabinetGeo, cabinetMat);
+cabinet.position.y = lowerH / 2 - sh / 2;
+cabinet.castShadow = true;
+cabinet.receiveShadow = true;
+cabinetGroup.add(cabinet);
+
+// 柜体前面板分割线（双开门）
+const doorLineGeo = new THREE.BoxGeometry(0.004, lowerH - 0.02, sd - 0.04);
+const doorLineMat = new THREE.MeshStandardMaterial({ color: 0x2d3748, roughness: 0.3, metalness: 0.8 });
+const doorLine = new THREE.Mesh(doorLineGeo, doorLineMat);
+doorLine.position.set(0, -sh / 2 + lowerH / 2, sd / 2 - 0.01);
+cabinetGroup.add(doorLine);
+
+// 6060 立柱（4根）
+const pillarGeo = new THREE.BoxGeometry(0.06, sh, 0.06);
+const pillarMat = new THREE.MeshStandardMaterial({ color: 0x37474f, roughness: 0.3, metalness: 0.7 });
+const pillarPositions = [
+  [-sw/2 + 0.03, 0, -sd/2 + 0.03],
+  [sw/2 - 0.03, 0, -sd/2 + 0.03],
+  [-sw/2 + 0.03, 0, sd/2 - 0.03],
+  [sw/2 - 0.03, 0, sd/2 - 0.03],
+];
+pillarPositions.forEach(([px, py, pz]) => {
+  const pillar = new THREE.Mesh(pillarGeo, pillarMat);
+  pillar.position.set(px, py, pz);
+  pillar.castShadow = true;
+  cabinetGroup.add(pillar);
+});
+
+// 4040 横梁
+const beamGeoH = new THREE.BoxGeometry(sw, 0.04, 0.04);
+const beamGeoV = new THREE.BoxGeometry(0.04, 0.04, sd);
+[sh/2 - 0.02, -sh/2 + lowerH - 0.02, -sh/2 + 0.02].forEach(yPos => {
+  const beam1 = new THREE.Mesh(beamGeoH, pillarMat);
+  beam1.position.y = yPos;
+  cabinetGroup.add(beam1);
+  const beam2 = new THREE.Mesh(beamGeoV, pillarMat);
+  beam2.position.y = yPos;
+  cabinetGroup.add(beam2);
+});
+
+// 散热格栅（前面板底部）
+for (let i = 0; i < 8; i++) {
+  const grillGeo = new THREE.BoxGeometry(0.02, 0.008, 0.06);
+  const grillMat = new THREE.MeshStandardMaterial({ color: 0x2d3748, roughness: 0.2, metalness: 0.9 });
+  const grill = new THREE.Mesh(grillGeo, grillMat);
+  grill.position.set(-0.2 + i * 0.055, -sh/2 + 0.05, sd/2 + 0.001);
+  cabinetGroup.add(grill);
+}
+
+// 脚杯 ×4
+const footGeo = new THREE.CylinderGeometry(0.025, 0.032, 0.04, 16);
+const footMat = new THREE.MeshStandardMaterial({ color: 0x546e7a, roughness: 0.3, metalness: 0.8 });
+const footBaseGeo = new THREE.CylinderGeometry(0.035, 0.035, 0.008, 16);
+[[-sw/2+0.06, -sh/2-0.02, -sd/2+0.06],[sw/2-0.06, -sh/2-0.02, -sd/2+0.06],
+ [-sw/2+0.06, -sh/2-0.02, sd/2-0.06],[sw/2-0.06, -sh/2-0.02, sd/2-0.06]].forEach(([fx,fy,fz]) => {
+  const foot = new THREE.Mesh(footGeo, footMat);
+  foot.position.set(fx, fy, fz);
+  foot.castShadow = true;
+  cabinetGroup.add(foot);
+  const footBase = new THREE.Mesh(footBaseGeo, footMat);
+  footBase.position.set(fx, fy - 0.022, fz);
+  cabinetGroup.add(footBase);
+});
+
+// ===== 上部透明防护罩 (950mm) =====
+const coverGroup = new THREE.Group();
+
+// 亚克力面板 - 前、后、左、右
+const panelThick = 0.005;
+const panelMat = new THREE.MeshPhysicalMaterial({
+  color: 0xc8e6ff, roughness: 0.1, metalness: 0.05,
+  transparent: true, opacity: 0.25, clearcoat: 0.2
+});
+
+// 前面板（双开，带缝）
+const frontLeftGeo = new THREE.BoxGeometry(sw/2 - 0.002, upperH, panelThick);
+const frontLeft = new THREE.Mesh(frontLeftGeo, panelMat);
+frontLeft.position.set(-sw/4, sh/2 - upperH/2, sd/2);
+coverGroup.add(frontLeft);
+
+const frontRightGeo = new THREE.BoxGeometry(sw/2 - 0.002, upperH, panelThick);
+const frontRight = new THREE.Mesh(frontRightGeo, panelMat);
+frontRight.position.set(sw/4, sh/2 - upperH/2, sd/2);
+coverGroup.add(frontRight);
+
+// 后面板
+const backGeo = new THREE.BoxGeometry(sw, upperH, panelThick);
+const back = new THREE.Mesh(backGeo, panelMat);
+back.position.set(0, sh/2 - upperH/2, -sd/2);
+coverGroup.add(back);
+
+// 左侧面板（可开门）
+const leftSideGeo = new THREE.BoxGeometry(panelThick, upperH, sd/2 - 0.002);
+const leftSide = new THREE.Mesh(leftSideGeo, panelMat);
+leftSide.position.set(-sw/2, sh/2 - upperH/2, sd/4);
+coverGroup.add(leftSide);
+
+const leftSide2Geo = new THREE.BoxGeometry(panelThick, upperH, sd/2 - 0.002);
+const leftSide2 = new THREE.Mesh(leftSide2Geo, panelMat);
+leftSide2.position.set(-sw/2, sh/2 - upperH/2, -sd/4);
+coverGroup.add(leftSide2);
+
+// 右侧面板
+const rightSideGeo = new THREE.BoxGeometry(panelThick, upperH, sd/2 - 0.002);
+const rightSide = new THREE.Mesh(rightSideGeo, panelMat);
+rightSide.position.set(sw/2, sh/2 - upperH/2, sd/4);
+coverGroup.add(rightSide);
+
+const rightSide2Geo = new THREE.BoxGeometry(panelThick, upperH, sd/2 - 0.002);
+const rightSide2 = new THREE.Mesh(rightSide2Geo, panelMat);
+rightSide2.position.set(sw/2, sh/2 - upperH/2, -sd/4);
+coverGroup.add(rightSide2);
+
+// 顶面板
+const topGeo = new THREE.BoxGeometry(sw, panelThick, sd);
+const top = new THREE.Mesh(topGeo, panelMat);
+top.position.set(0, sh/2, 0);
+coverGroup.add(top);
+
+// 4040框架横梁（透明罩内）
+const frameMat = new THREE.MeshStandardMaterial({ color: 0x546e7a, roughness: 0.3, metalness: 0.7 });
+const frameTopBeams = [
+  [-sw/2, sh/2, 0, 0.04, 0.04, sd],
+  [sw/2, sh/2, 0, 0.04, 0.04, sd],
+  [0, sh/2, -sd/2, sw, 0.04, 0.04],
+  [0, sh/2, sd/2, sw, 0.04, 0.04],
+];
+frameTopBeams.forEach(([fx, fy, fz, fw, fh, fd]) => {
+  const beam = new THREE.Mesh(new THREE.BoxGeometry(fw, fh, fd), frameMat);
+  beam.position.set(fx, fy, fz);
+  coverGroup.add(beam);
+});
+
+// ===== DDR 玻璃转盘 (Φ400mm, 位于上部罩内) =====
+const discGroup = new THREE.Group();
+discGroup.position.y = sh/2 - upperH + 0.35;
+
+// 玻璃盘
+const discGeo = new THREE.CylinderGeometry(0.20, 0.20, 0.01, 64);
+const discMat = new THREE.MeshPhysicalMaterial({
+  color: 0xbbdefb, roughness: 0.05, metalness: 0.1,
+  transparent: true, opacity: 0.5, clearcoat: 0.9
+});
+const disc = new THREE.Mesh(discGeo, discMat);
+disc.castShadow = true;
+disc.receiveShadow = true;
+discGroup.add(disc);
+
+// 玻璃盘边框
+const discRingGeo = new THREE.TorusGeometry(0.20, 0.005, 16, 64);
+const discRingMat = new THREE.MeshStandardMaterial({ color: 0x4dabf7, roughness: 0.2, metalness: 0.8 });
+const discRing = new THREE.Mesh(discRingGeo, discRingMat);
+discRing.rotation.x = Math.PI / 2;
+discRing.position.y = 0.005;
+discGroup.add(discRing);
+
+// 颗粒排列圈
+const particleRingGeo = new THREE.TorusGeometry(0.17, 0.002, 8, 64);
+const particleRing = new THREE.Mesh(particleRingGeo, new THREE.MeshStandardMaterial({ color: 0xffd700, roughness: 0.3 }));
+particleRing.rotation.x = Math.PI / 2;
+particleRing.position.y = 0.007;
+discGroup.add(particleRing);
+
+// 颗粒
+const colors = [0x51cf66, 0xff6b6b, 0xffd700, 0x51cf66, 0x51cf66, 0xff6b6b, 0x51cf66, 0xff9800,
+                0x51cf66, 0x51cf66, 0xffd700, 0x51cf66, 0xff6b6b, 0x51cf66, 0x51cf66, 0xff9800];
+for (let i = 0; i < 16; i++) {
+  const angle = (i / 16) * Math.PI * 2;
+  const px = Math.cos(angle) * 0.17;
+  const pz = Math.sin(angle) * 0.17;
+  const particleGeo = new THREE.SphereGeometry(0.004, 8, 8);
+  const particleMat = new THREE.MeshStandardMaterial({ color: colors[i], roughness: 0.3 });
+  const particle = new THREE.Mesh(particleGeo, particleMat);
+  particle.position.set(px, 0.01, pz);
+  discGroup.add(particle);
+}
+
+// DD 马达（下方圆柱）
+const motorGeo = new THREE.CylinderGeometry(0.06, 0.07, 0.08, 32);
+const motorMat = new THREE.MeshStandardMaterial({ color: 0x546e7a, roughness: 0.3, metalness: 0.7 });
+const motor = new THREE.Mesh(motorGeo, motorMat);
+motor.position.y = -0.045;
+motor.castShadow = true;
+discGroup.add(motor);
+
+// 减震平台
+const platformGeo = new THREE.BoxGeometry(0.5, 0.02, 0.5);
+const platformMat = new THREE.MeshStandardMaterial({ color: 0xb0bec5, roughness: 0.4, metalness: 0.5 });
+const platform = new THREE.Mesh(platformGeo, platformMat);
+platform.position.y = -0.1;
+platform.receiveShadow = true;
+platform.castShadow = true;
+discGroup.add(platform);
+
+// 环形光源示意
+for (let i = 0; i < 6; i++) {
+  const angle = (i / 6) * Math.PI * 2;
+  const lx = Math.cos(angle) * 0.19;
+  const lz = Math.sin(angle) * 0.19;
+  const ringLightGeo = new THREE.TorusGeometry(0.025, 0.004, 8, 16);
+  const ringLight = new THREE.Mesh(ringLightGeo, new THREE.MeshStandardMaterial({ color: 0xffc107, roughness: 0.2, emissive: 0xffc107, emissiveIntensity: 0.3 }));
+  ringLight.position.set(lx, 0.04, lz);
+  ringLight.rotation.x = Math.PI / 2;
+  discGroup.add(ringLight);
+}
+
+// ===== 6台相机 =====
+const camerasGroup = new THREE.Group();
+const cameraPositions = [
+  { angle: 0, y: 0.08, label: 'C1' },
+  { angle: Math.PI/3, y: 0.08, label: 'C2' },
+  { angle: Math.PI*2/3, y: 0.18, label: 'C3' },
+  { angle: Math.PI, y: 0.08, label: 'C4' },
+  { angle: Math.PI*4/3, y: -0.06, label: 'C5' },
+  { angle: Math.PI*5/3, y: 0.08, label: 'C6' },
+];
+
+cameraPositions.forEach(cp => {
+  const camGroup = new THREE.Group();
+  const distance = 0.14;
+  const cx = Math.cos(cp.angle) * distance;
+  const cz = Math.sin(cp.angle) * distance;
+  
+  // 相机本体
+  const camBodyGeo = new THREE.BoxGeometry(0.024, 0.018, 0.029);
+  const camBodyMat = new THREE.MeshStandardMaterial({ color: cp.label === 'C3' ? 0x2196f3 : (cp.label === 'C5' ? 0xff9800 : 0x4caf50), roughness: 0.3, metalness: 0.5 });
+  const camBody = new THREE.Mesh(camBodyGeo, camBodyMat);
+  camBody.position.y = 0.01;
+  camGroup.add(camBody);
+  
+  // 镜头
+  const lensGeo = new THREE.CylinderGeometry(0.007, 0.009, 0.018, 16);
+  const lensMat = new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 0.2, metalness: 0.9 });
+  const lens = new THREE.Mesh(lensGeo, lensMat);
+  lens.position.z = 0.023;
+  lens.position.y = 0.005;
+  lens.rotation.x = Math.PI / 2;
+  camGroup.add(lens);
+  
+  // 环形光源
+  const clightGeo = new THREE.TorusGeometry(0.012, 0.003, 8, 16);
+  const clight = new THREE.Mesh(clightGeo, new THREE.MeshStandardMaterial({ color: 0xffd700, roughness: 0.2, emissive: 0xffd700, emissiveIntensity: 0.4 }));
+  clight.position.z = 0.03;
+  clight.position.y = 0.005;
+  camGroup.add(clight);
+  
+  // L型支架
+  const bracketVGeo = new THREE.BoxGeometry(0.004, 0.06, 0.004);
+  const bracketMat = new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.3, metalness: 0.8 });
+  const bracketV = new THREE.Mesh(bracketVGeo, bracketMat);
+  bracketV.position.y = -0.02;
+  camGroup.add(bracketV);
+  
+  const bracketHGeo = new THREE.BoxGeometry(0.03, 0.004, 0.004);
+  const bracketH = new THREE.Mesh(bracketHGeo, bracketMat);
+  bracketH.position.z = -0.01;
+  bracketH.position.y = -0.048;
+  camGroup.add(bracketH);
+  
+  camGroup.position.set(cx, discGroup.position.y + cp.y, cz);
+  camGroup.lookAt(new THREE.Vector3(0, discGroup.position.y, 0));
+  camerasGroup.add(camGroup);
+});
+
+// ===== 振动盘 + 补料斗 =====
+const feederGroup = new THREE.Group();
+feederGroup.position.set(-0.35, sh/2 - upperH + 0.15, -0.30);
+
+// 振动盘主体
+const bowlGeo = new THREE.CylinderGeometry(0.06, 0.04, 0.05, 32);
+const bowlMat = new THREE.MeshStandardMaterial({ color: 0x2d6a4f, roughness: 0.4, metalness: 0.6 });
+const bowl = new THREE.Mesh(bowlGeo, bowlMat);
+bowl.position.y = 0.02;
+bowl.castShadow = true;
+feederGroup.add(bowl);
+
+// 振动盘底座
+const bowlBaseGeo = new THREE.CylinderGeometry(0.05, 0.06, 0.03, 32);
+const bowlBase = new THREE.Mesh(bowlBaseGeo, new THREE.MeshStandardMaterial({ color: 0x1b4332, roughness: 0.4, metalness: 0.7 }));
+bowlBase.position.y = -0.01;
+feederGroup.add(bowlBase);
+
+// 补料斗
+const hopperGeo = new THREE.CylinderGeometry(0.05, 0.03, 0.06, 6);
+const hopperMat = new THREE.MeshStandardMaterial({ color: 0x40916c, roughness: 0.4, metalness: 0.6 });
+const hopper = new THREE.Mesh(hopperGeo, hopperMat);
+hopper.position.y = 0.08;
+hopper.castShadow = true;
+feederGroup.add(hopper);
+
+// 送料轨道
+const trackGeo = new THREE.BoxGeometry(0.08, 0.008, 0.01);
+const trackMat = new THREE.MeshStandardMaterial({ color: 0x52b788, roughness: 0.3, metalness: 0.5 });
+const track = new THREE.Mesh(trackGeo, trackMat);
+track.position.set(0.06, 0.03, 0);
+feederGroup.add(track);
+
+// ===== 分选工位 + 喷嘴 =====
+const sorterGroup = new THREE.Group();
+sorterGroup.position.set(0.28, discGroup.position.y, 0.30);
+
+// 喷气阀体
+const valveGeo = new THREE.BoxGeometry(0.03, 0.025, 0.02);
+const valveMat = new THREE.MeshStandardMaterial({ color: 0xb0bec5, roughness: 0.3, metalness: 0.7 });
+for (let i = 0; i < 3; i++) {
+  const valve = new THREE.Mesh(valveGeo, valveMat);
+  valve.position.set(0.02 + i * 0.018, 0.015, 0);
+  sorterGroup.add(valve);
+}
+
+// 喷嘴（三个角度：15°, 30°, 45°）
+const nozzleColors = [0x4caf50, 0xf44336, 0xffc107];
+const nozzleAngles = [15, 30, 45];
+nozzleAngles.forEach((ang, idx) => {
+  const nozzleGeo = new THREE.ConeGeometry(0.005, 0.015, 8);
+  const nozzle = new THREE.Mesh(nozzleGeo, new THREE.MeshStandardMaterial({ color: nozzleColors[idx], roughness: 0.3 }));
+  nozzle.position.set(0.02 + idx * 0.018, 0.01, 0);
+  nozzle.rotation.z = ang * Math.PI / 180;
+  sorterGroup.add(nozzle);
+});
+
+// 分选通道（下方）
+const chGeo = new THREE.BoxGeometry(0.015, 0.08, 0.015);
+const channelLabels = ['OK', 'NG', '回收'];
+const channelColors = [0x4caf50, 0xf44336, 0xffc107];
+channelLabels.forEach((label, idx) => {
+  const ch = new THREE.Mesh(chGeo, new THREE.MeshStandardMaterial({ color: channelColors[idx], roughness: 0.4 }));
+  ch.position.set(0.02 + idx * 0.018, -0.05, 0);
+  sorterGroup.add(ch);
+});
+
+// ===== 操作面板（正面下部） =====
+const panelGroup = new THREE.Group();
+panelGroup.position.set(-0.15, -sh/2 + lowerH * 0.25, sd/2 + 0.01);
+
+// 触摸屏
+const screenGeo = new THREE.BoxGeometry(0.14, 0.09, 0.005);
+const screenMat = new THREE.MeshStandardMaterial({ color: 0x1a1a2e, roughness: 0.1, metalness: 0.3, emissive: 0x112233, emissiveIntensity: 0.5 });
+const screen = new THREE.Mesh(screenGeo, screenMat);
+screen.position.y = 0.06;
+panelGroup.add(screen);
+
+// 触摸屏边框
+const screenFrameGeo = new THREE.BoxGeometry(0.15, 0.10, 0.008);
+const screenFrame = new THREE.Mesh(screenFrameGeo, new THREE.MeshStandardMaterial({ color: 0x333333, roughness: 0.2, metalness: 0.9 }));
+screenFrame.position.y = 0.06;
+screenFrame.position.z = -0.002;
+panelGroup.add(screenFrame);
+
+// 急停按钮
+const embGeo = new THREE.CylinderGeometry(0.012, 0.012, 0.01, 16);
+const emb = new THREE.Mesh(embGeo, new THREE.MeshStandardMaterial({ color: 0xf44336, roughness: 0.2, emissive: 0x330000, emissiveIntensity: 0.5 }));
+emb.position.set(-0.05, 0.01, 0.005);
+emb.rotation.x = Math.PI / 2;
+panelGroup.add(emb);
+
+// 启动按钮
+const startBtnGeo = new THREE.CylinderGeometry(0.008, 0.008, 0.008, 16);
+const startBtn = new THREE.Mesh(startBtnGeo, new THREE.MeshStandardMaterial({ color: 0x4caf50, roughness: 0.2, emissive: 0x003300, emissiveIntensity: 0.4 }));
+startBtn.position.set(0.0, 0.01, 0.005);
+startBtn.rotation.x = Math.PI / 2;
+panelGroup.add(startBtn);
+
+// 复位按钮
+const resetBtnGeo = new THREE.CylinderGeometry(0.007, 0.007, 0.008, 16);
+const resetBtn = new THREE.Mesh(resetBtnGeo, new THREE.MeshStandardMaterial({ color: 0xffc107, roughness: 0.2 }));
+resetBtn.position.set(0.04, 0.01, 0.005);
+resetBtn.rotation.x = Math.PI / 2;
+panelGroup.add(resetBtn);
+
+// 指示灯
+const indicatorColors = [0x4caf50, 0xffc107, 0xf44336];
+const indicatorLabels = ['运行', '待机', '报警'];
+indicatorColors.forEach((c, i) => {
+  const indGeo = new THREE.SphereGeometry(0.004, 8, 8);
+  const indMat = new THREE.MeshStandardMaterial({ color: c, roughness: 0.2, emissive: c, emissiveIntensity: 0.6 });
+  const ind = new THREE.Mesh(indGeo, indMat);
+  ind.position.set(0.08, 0.06 - i * 0.015, 0.005);
+  panelGroup.add(ind);
+});
+
+// ===== 内部组件（透过透明罩可见） =====
+const internalGroup = new THREE.Group();
+
+// 工控机
+const ipcGeo = new THREE.BoxGeometry(0.12, 0.08, 0.06);
+const ipcMat = new THREE.MeshStandardMaterial({ color: 0x78909c, roughness: 0.3, metalness: 0.6 });
+const ipc = new THREE.Mesh(ipcGeo, ipcMat);
+ipc.position.set(0.25, -sh/2 + lowerH * 0.25, -sd/2 + 0.10);
+ipc.castShadow = true;
+internalGroup.add(ipc);
+
+// PLC
+const plcGeo = new THREE.BoxGeometry(0.08, 0.06, 0.05);
+const plcMat = new THREE.MeshStandardMaterial({ color: 0xb0bec5, roughness: 0.3, metalness: 0.5 });
+const plc = new THREE.Mesh(plcGeo, plcMat);
+plc.position.set(0.15, -sh/2 + lowerH * 0.65, -sd/2 + 0.10);
+internalGroup.add(plc);
+
+// 伺服驱动器
+const servoGeo = new THREE.BoxGeometry(0.05, 0.04, 0.035);
+const servoMat = new THREE.MeshStandardMaterial({ color: 0x9e9e9e, roughness: 0.3, metalness: 0.6 });
+const servo = new THREE.Mesh(servoGeo, servoMat);
+servo.position.set(-0.20, -sh/2 + lowerH * 0.25, -sd/2 + 0.10);
+internalGroup.add(servo);
+
+// PoE交换机
+const poeGeo = new THREE.BoxGeometry(0.06, 0.025, 0.04);
+const poe = new THREE.Mesh(poeGeo, new THREE.MeshStandardMaterial({ color: 0x78909c, roughness: 0.3, metalness: 0.5 }));
+poe.position.set(0.25, -sh/2 + lowerH * 0.15, -sd/2 + 0.10);
+internalGroup.add(poe);
+
+// ===== 组装场景 =====
+const fullAssembly = new THREE.Group();
+fullAssembly.add(cabinetGroup);
+fullAssembly.add(coverGroup);
+fullAssembly.add(discGroup);
+fullAssembly.add(camerasGroup);
+fullAssembly.add(feederGroup);
+fullAssembly.add(sorterGroup);
+fullAssembly.add(panelGroup);
+fullAssembly.add(internalGroup);
+scene.add(fullAssembly);
+
+// ===== 标签 =====
+scene.add(createLabel('透明防护罩', new THREE.Vector3(0, sh/2 - upperH/2, sd/2 + 0.12), '#4dabf7'));
+scene.add(createLabel('金属柜体', new THREE.Vector3(0, -sh/2 + lowerH/2, sd/2 + 0.12), '#a0aec0'));
+scene.add(createLabel('玻璃转盘 Φ400', new THREE.Vector3(0, discGroup.position.y + 0.06, 0), '#ffd700'));
+scene.add(createLabel('DD马达', new THREE.Vector3(0, discGroup.position.y - 0.1, 0.15), '#999'));
+scene.add(createLabel('振动盘', new THREE.Vector3(-0.42, feederGroup.position.y + 0.06, -0.25), '#ff9800'));
+scene.add(createLabel('分选工位', new THREE.Vector3(0.35, discGroup.position.y + 0.02, 0.32), '#ff6b6b'));
+scene.add(createLabel('OK/NG/回收', new THREE.Vector3(0.35, discGroup.position.y - 0.06, 0.38), '#ff6b6b'));
+scene.add(createLabel('操作面板', new THREE.Vector3(-0.15, -sh/2 + lowerH * 0.25 + 0.06, sd/2 + 0.08), '#a0c4ff'));
+scene.add(createLabel('C1', new THREE.Vector3(Math.cos(0)*0.16, discGroup.position.y+0.1, Math.sin(0)*0.16), '#4caf50'));
+scene.add(createLabel('C2', new THREE.Vector3(Math.cos(Math.PI/3)*0.16, discGroup.position.y+0.1, Math.sin(Math.PI/3)*0.16), '#4caf50'));
+scene.add(createLabel('C3(俯)', new THREE.Vector3(Math.cos(Math.PI*2/3)*0.18, discGroup.position.y+0.22, Math.sin(Math.PI*2/3)*0.18), '#2196f3'));
+scene.add(createLabel('C4', new THREE.Vector3(Math.cos(Math.PI)*0.16, discGroup.position.y+0.1, Math.sin(Math.PI)*0.16), '#4caf50'));
+scene.add(createLabel('C5(仰)', new THREE.Vector3(Math.cos(Math.PI*4/3)*0.18, discGroup.position.y-0.02, Math.sin(Math.PI*4/3)*0.18), '#ff9800'));
+scene.add(createLabel('C6', new THREE.Vector3(Math.cos(Math.PI*5/3)*0.16, discGroup.position.y+0.1, Math.sin(Math.PI*5/3)*0.16), '#4caf50'));
+
+// 尺寸标注
+scene.add(createLabel('1060mm', new THREE.Vector3(0, -sh/2 - 0.08, sd/2 + 0.05), '#e03131'));
+scene.add(createLabel('1850mm', new THREE.Vector3(sw/2 + 0.08, 0, sd/2 + 0.05), '#e03131'));
+scene.add(createLabel('990mm', new THREE.Vector3(sw/2 + 0.05, -sh/2 - 0.08, 0), '#e03131'));
+
+// 动画
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+  labelRenderer.render(scene, camera);
+}
+animate();
+
+// 窗口大小调整
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  labelRenderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+</body>
+</html>
